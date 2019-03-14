@@ -68,6 +68,7 @@ namespace ForceACallout.Utils
 
         internal static string StartRandomCallout()
         {
+            Logger.DebugLog("StartRandomCallout() Started");
             Random RandomValue = new Random();
 
             try

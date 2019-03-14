@@ -22,8 +22,10 @@ namespace ForceACallout.Utils
             {
                 GameFiber.Yield();
 
+                //Checks if the key from the ini file is pressed
                 if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey))
                 {
+                    //Starts a random callout
                     Logger.DebugLog("FoceCalloutKey pressed");
                     RandomCallouts.StartRandomCallout();
 

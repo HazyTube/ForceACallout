@@ -16,8 +16,10 @@ namespace ForceACallout.Utils
 {
     internal static class Notifier
     {
+        //Only include the the name of the plugin, this is the prefix
         private const string NotificationPrefix = "Force A Callout";
 
+        //Log line
         internal static void Notify(string body)
         {
             string notice = string.Format("~b~[{0}]~s~: {1}", NotificationPrefix, body);

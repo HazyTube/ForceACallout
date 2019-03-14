@@ -16,8 +16,10 @@ namespace ForceACallout.Utils
 {
 internal static class Logger
     {
+        //Only include the plugin name.
         private const string LogPrefix = "ForceACallout";
 
+        //Log line
         internal static void Log(string LogLine)
         {
             string log = string.Format("[{0}]: {1}", LogPrefix, LogLine);
@@ -25,6 +27,7 @@ internal static class Logger
             Game.LogTrivial(log);
         }
 
+        //Log line that will only run if the setting for debug logging is enabled
         internal static void DebugLog(string LogLine)
         {
             if (Globals.Application.DebugLogging == true)

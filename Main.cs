@@ -18,20 +18,28 @@ namespace ForceACallout
 {
     public class Main : Plugin
     {
+        //this initializes the plugin
         public override void Initialize()
         {
             Functions.OnOnDutyStateChanged += DutyStateChange;
+
+            //Simple log that let's the user know the plugin loaded succesfully + the assembly version
             Logger.Log("ForceAcAllout " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " has been initialised.");
+
+            //This sets the currentversion
             Globals.Application.CurrentVersion = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
 
+            //This sets the config path to /plugins/lspdfr
             Globals.Application.ConfigPath = "Plugins/LSPDFR/";
 
         }
 
         public void DutyStateChange(bool OnDuty)
         {
+            //This only runs if the player is onDuty
             if (OnDuty)
             {
+                //Checks for an update
                 int versionStatus = Updater.CheckUpdate();
                 if (versionStatus == -1)
                 {
@@ -52,6 +60,7 @@ namespace ForceACallout
                     Logger.Log("Plugin Version v" + Globals.Application.CurrentVersion + " loaded successfully");
                 }
 
+                //Loads the config file (.ini file)
                 Config.LoadConfig();
 
                 StartPlugin();
