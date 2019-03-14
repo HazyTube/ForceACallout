@@ -1,8 +1,0 @@
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\bin\Debug\ForceACallout.dll
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\bin\Debug\ForceACallout.pdb
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\bin\Debug\LSPD First Response.dll
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\bin\Debug\RagePluginHookSDK.dll
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\obj\Debug\ForceACallout.csprojResolveAssemblyReference.cache
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\obj\Debug\ForceACallout.dll
-Z:\GTA 5 Mod Development\Projects\ForceACallout\ForceACallout\obj\Debug\ForceACallout.pdb
