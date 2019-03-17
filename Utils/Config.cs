@@ -6,7 +6,7 @@ Released on: GitHub and LSPDFR
 
 Credits:
 Thanks to https://gist.githubusercontent.com/RiverGrande/d27b7506d5eb1372e53f1840a8a647c8/raw/a71c93eb007f9b35e3b1e376026624507779f40e/RandomCallouts.cs
-Thanks to NoNameSet for helping with some stuff
+Thanks to NoNameSet for helping with the on screen text box
 
 */
 
@@ -49,19 +49,27 @@ namespace ForceACallout.Utils
             string opTemp;
             string temp2;
             string temp3;
+            string temp4;
+            int temp5;
 
             opTemp = settings.ReadString("Keybindings", "ForceCalloutKey", "X");
             temp2 = settings.ReadString("General", "DebugLogging", "False");
             temp3 = settings.ReadString("Keybindings", "AvailabilityKey", "Z");
+            temp4 = settings.ReadString("General", "AvailableForCalloutsText", "True");
+            temp5 = settings.ReadInt16("General", "RectangleAlpha", 200);
+
 
             Logger.Log("ForceCalloutKey is set to " + opTemp);
             Logger.Log("DebugLogging is set to " + temp2);
             Logger.Log("AvailabilityKey is set to " + temp3);
+            Logger.Log("AvailableForCalloutsText is set to " + temp4);
+            Logger.Log("RectangleAlpha is set to " + temp5);
 
             Globals.Controls.ForceCalloutKey = (Keys)kc.ConvertFromString(opTemp);
             Globals.Controls.AvailabilityKey = (Keys)kc.ConvertFromString(temp3);
             Globals.Application.DebugLogging = Convert.ToBoolean(temp2);
-
+            Globals.Application.AvailableForCalloutsText = Convert.ToBoolean(temp4);
+            Globals.Application.RectangleAlpha = temp5;
         }
     }
 }

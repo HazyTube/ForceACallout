@@ -6,13 +6,12 @@ Released on: GitHub and LSPDFR
 
 Credits:
 Thanks to https://gist.githubusercontent.com/RiverGrande/d27b7506d5eb1372e53f1840a8a647c8/raw/a71c93eb007f9b35e3b1e376026624507779f40e/RandomCallouts.cs
-Thanks to NoNameSet for helping with some stuff
+Thanks to NoNameSet for helping with the on screen text box
 
 */
 
 using LSPD_First_Response.Mod.API;
 using Rage;
-using Rage.Native;
 
 namespace ForceACallout.Utils
 {
@@ -20,6 +19,8 @@ namespace ForceACallout.Utils
     {
         public static void RunPlugin()
         {
+            Availability.Main();
+
             while (true)
             {
                 GameFiber.Yield();
@@ -42,13 +43,23 @@ namespace ForceACallout.Utils
                     if (Functions.IsPlayerAvailableForCalls())
                     {
                         Functions.SetPlayerAvailableForCalls(false);
-                        Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
+
+                        if(Globals.Application.AvailableForCalloutsText == false)
+                        {
+                            Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
+                        }
+
                         Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
                     }
                     else
                     {
                         Functions.SetPlayerAvailableForCalls(true);
-                        Game.DisplayNotification("You are now ~g~available~s~ for calls");
+
+                        if (Globals.Application.AvailableForCalloutsText == false)
+                        {
+                            Game.DisplayNotification("You are now ~g~available~s~ for calls");
+                        }
+
                         Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
                     }
                 }
