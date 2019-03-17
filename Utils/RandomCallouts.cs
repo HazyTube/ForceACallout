@@ -81,7 +81,8 @@ namespace ForceACallout.Utils
 
             catch
             {
-                return "null";
+                Logger.Log("Could not start callout, see RagePluginHook.log for more details");
+                return null;
             }
         }
     }

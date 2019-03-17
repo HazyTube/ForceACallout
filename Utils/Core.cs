@@ -10,7 +10,9 @@ Thanks to NoNameSet for helping with some stuff
 
 */
 
+using LSPD_First_Response.Mod.API;
 using Rage;
+using Rage.Native;
 
 namespace ForceACallout.Utils
 {
@@ -29,6 +31,26 @@ namespace ForceACallout.Utils
                     Logger.DebugLog("FoceCalloutKey pressed");
                     RandomCallouts.StartRandomCallout();
 
+                }
+
+                //Checks if the AvailabilityKey is pressed
+                if (Game.IsKeyDown(Globals.Controls.AvailabilityKey))
+                {
+                    Logger.DebugLog("AvailabilityKey Pressed");
+
+                    //If the player is available for calls (true) we set the availability to unavailable (false)
+                    if (Functions.IsPlayerAvailableForCalls())
+                    {
+                        Functions.SetPlayerAvailableForCalls(false);
+                        Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
+                        Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                    }
+                    else
+                    {
+                        Functions.SetPlayerAvailableForCalls(true);
+                        Game.DisplayNotification("You are now ~g~available~s~ for calls");
+                        Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                    }
                 }
             }
         }

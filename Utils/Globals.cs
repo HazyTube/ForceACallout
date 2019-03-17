@@ -19,6 +19,7 @@ namespace ForceACallout
         internal static class Controls
         {
             public static Keys ForceCalloutKey { get; set; }
+            public static Keys AvailabilityKey { get; set; }
         }
 
         internal static class Application

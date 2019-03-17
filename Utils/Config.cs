@@ -48,14 +48,18 @@ namespace ForceACallout.Utils
 
             string opTemp;
             string temp2;
+            string temp3;
 
             opTemp = settings.ReadString("Keybindings", "ForceCalloutKey", "X");
             temp2 = settings.ReadString("General", "DebugLogging", "False");
+            temp3 = settings.ReadString("Keybindings", "AvailabilityKey", "Z");
 
             Logger.Log("ForceCalloutKey is set to " + opTemp);
             Logger.Log("DebugLogging is set to " + temp2);
+            Logger.Log("AvailabilityKey is set to " + temp3);
 
             Globals.Controls.ForceCalloutKey = (Keys)kc.ConvertFromString(opTemp);
+            Globals.Controls.AvailabilityKey = (Keys)kc.ConvertFromString(temp3);
             Globals.Application.DebugLogging = Convert.ToBoolean(temp2);
 
         }
