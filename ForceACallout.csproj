@@ -83,6 +83,9 @@
     <Compile Include="Utils\RandomCallouts.cs" />
     <Compile Include="Utils\Updater.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ForceACallout.ini" />
+    <None Include="LatestVersion" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

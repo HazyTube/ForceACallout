@@ -19,48 +19,110 @@ namespace ForceACallout.Utils
     {
         public static void RunPlugin()
         {
+            //Loads the on screen text
             Availability.Main();
 
+            //Main loop
             while (true)
             {
                 GameFiber.Yield();
 
-                //Checks if the key from the ini file is pressed
-                if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey))
+                //Checks if the modifier value is set to none
+                if(Globals.Controls.ForceCalloutModifier == System.Windows.Forms.Keys.None)
                 {
-                    //Starts a random callout
-                    Logger.DebugLog("FoceCalloutKey pressed");
-                    RandomCallouts.StartRandomCallout();
+                    //Checks if the key to force a callout is pressed, then starts a random callout and debug logs something
+                    if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey))
+                    {
+                        Logger.DebugLog("FoceCalloutKey pressed");
+                        RandomCallouts.StartRandomCallout();
 
+                    }
+                }
+                else
+                {
+                    //If the modifier value is set to something else it will check if the key and modifier is pressed to force a callout, then starts a random callout and logs something
+                    if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey) && Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutModifier))
+                    {
+                        Logger.DebugLog("FoceCalloutKey + ModifierKey pressed");
+                        RandomCallouts.StartRandomCallout();
+
+                    }
                 }
 
-                //Checks if the AvailabilityKey is pressed
-                if (Game.IsKeyDown(Globals.Controls.AvailabilityKey))
+                //Checks if the modifier value is set to none
+                if(Globals.Controls.AvailabilityModifier == System.Windows.Forms.Keys.None)
                 {
-                    Logger.DebugLog("AvailabilityKey Pressed");
-
-                    //If the player is available for calls (true) we set the availability to unavailable (false)
-                    if (Functions.IsPlayerAvailableForCalls())
+                    //Checks if the key to set the player's availabilityKey is pressed, then logs something
+                    if (Game.IsKeyDown(Globals.Controls.AvailabilityKey))
                     {
-                        Functions.SetPlayerAvailableForCalls(false);
+                        Logger.DebugLog("AvailabilityKey Pressed");
 
-                        if(Globals.Application.AvailableForCalloutsText == false)
+                        //Checks if the player is available for calls
+                        if (Functions.IsPlayerAvailableForCalls())
                         {
-                            Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
-                        }
+                            //If the player is available for calls it sets the availability to false
+                            Functions.SetPlayerAvailableForCalls(false);
 
-                        Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                            //If the on screen text is set to false it will show a notification instead
+                            if (Globals.Application.AvailableForCalloutsText == false)
+                            {
+                                Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
+                            }
+
+                            //Logs something
+                            Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                        }
+                        //If the player is not available for calls, it will set the availability to true
+                        else
+                        {
+                            Functions.SetPlayerAvailableForCalls(true);
+
+                            //If the on screen text is set to false it will show a notification instead
+                            if (Globals.Application.AvailableForCalloutsText == false)
+                            {
+                                Game.DisplayNotification("You are now ~g~available~s~ for calls");
+                            }
+
+                            //Logs something
+                            Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                        }
                     }
-                    else
+                }
+                //If the modifier key is set to something other than None it will check if the key and modifier is pressed
+                else
+                {
+                    if (Game.IsKeyDown(Globals.Controls.AvailabilityKey) && Game.IsKeyDownRightNow(Globals.Controls.AvailabilityModifier))
                     {
-                        Functions.SetPlayerAvailableForCalls(true);
+                        Logger.DebugLog("AvailabilityKey + ModifierKey Pressed");
 
-                        if (Globals.Application.AvailableForCalloutsText == false)
+                        //If the player is available for calls, it will set the availability to false
+                        if (Functions.IsPlayerAvailableForCalls())
                         {
-                            Game.DisplayNotification("You are now ~g~available~s~ for calls");
-                        }
+                            Functions.SetPlayerAvailableForCalls(false);
 
-                        Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                            //If the on screen text is set to false it will show a notification instead
+                            if (Globals.Application.AvailableForCalloutsText == false)
+                            {
+                                Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
+                            }
+
+                            //Logs something
+                            Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                        }
+                        //If the player is not available for calls, it will set the availability to true
+                        else
+                        {
+                            Functions.SetPlayerAvailableForCalls(true);
+
+                            //If the on screen text is set to false it will show a notification instead
+                            if (Globals.Application.AvailableForCalloutsText == false)
+                            {
+                                Game.DisplayNotification("You are now ~g~available~s~ for calls");
+                            }
+
+                            //Logs something
+                            Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                        }
                     }
                 }
             }

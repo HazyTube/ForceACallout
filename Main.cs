@@ -24,12 +24,12 @@ namespace ForceACallout
             Functions.OnOnDutyStateChanged += DutyStateChange;
 
             //Simple log that let's the user know the plugin loaded succesfully + the assembly version
-            Logger.Log("ForceAcAllout " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " has been initialised.");
+            Logger.Log("ForceACallout " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " has been initialised.");
 
             //This sets the currentversion
             Globals.Application.CurrentVersion = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
 
-            //This sets the config path to /plugins/lspdfr
+            //This sets the config path to /plugins/lspdfr for the ini file
             Globals.Application.ConfigPath = "Plugins/LSPDFR/";
 
         }
@@ -72,7 +72,8 @@ namespace ForceACallout
             GameFiber.StartNew(delegate
         {
             Logger.DebugLog("New gamefiber started");
-            Core.RunPlugin(); });
+            Core.RunPlugin();
+        });
         }
 
         public override void Finally()

@@ -19,7 +19,10 @@ namespace ForceACallout
         internal static class Controls
         {
             public static Keys ForceCalloutKey { get; set; }
+            public static Keys ForceCalloutModifier { get; set; }
+
             public static Keys AvailabilityKey { get; set; }
+            public static Keys AvailabilityModifier { get; set; }
         }
 
         internal static class Application
@@ -27,6 +30,7 @@ namespace ForceACallout
             public static string ConfigPath { get; set; }
             public static string CurrentVersion { get; set; }
             public static string LatestVersion { get; set; }
+
             public static bool DebugLogging { get; set; }
             public static bool AvailableForCalloutsText { get; set; }
             public static int RectangleAlpha { get; set; }

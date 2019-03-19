@@ -27,14 +27,14 @@ namespace ForceACallout.Utils
 
             try
             { 
-                //Gets the latest version from a text file on github
+                //Gets the latest version from a file on github
                 Logger.DebugLog("Fetching latest plugin version from GitHub");
                 response = wc.DownloadStringTaskAsync(new Uri("https://raw.githubusercontent.com/HazyTube/ForceACallout/master/LatestVersion")).Result;
             }
             catch (Exception)
             {
                 //Logs something if there is an exception
-                Game.LogTrivial("Checking version of plugin 'Force A Callout' Failed");
+                Game.LogTrivial("Checking version of plugin 'ForceACallout' Failed");
             }
 
             //If we get a null response, the download failed and return -2 and inform the user that the download failed
