@@ -16,16 +16,25 @@ using LSPD_First_Response.Mod.Callouts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rage;
 
 namespace ForceACallout.Utils
 {
-    public static class RandomCallouts
+    internal static class RandomCallouts
     {
         internal static List<string> RandomCalloutCache = new List<string>();
+        internal static int[] CalloutProbabilityRegistrationCount =
+        {
+            95, 80, 70, 50, 30, 15, 0
+        };
 
         static RandomCallouts()
         {
-            CacheCallouts();
+            GameFiber.StartNew(delegate
+            {
+                GameFiber.WaitWhile(() => !Globals.Application.SettingsLoaded);
+                CacheCallouts();
+            }, "CalloutCacheLoader");
         }
 
         internal static void CacheCallouts()
@@ -39,7 +48,7 @@ namespace ForceACallout.Utils
 
                 if (AssemCallouts.Count() < 1)
                 {
-                    Logger.Log(Assem.FullName + "No callouts detected.");
+                    Logger.Log(Assem.GetName().Name + " No callouts detected.");
                 }
 
                 else
@@ -55,15 +64,28 @@ namespace ForceACallout.Utils
 
                             if (CalloutAttribute != null)
                             {
-                                RandomCalloutCache.Add(CalloutAttribute.Name);
+                                if(Globals.Application.CalloutProbability == false)
+                                    RandomCalloutCache.Add(CalloutAttribute.Name);
+
+                                else
+                                {
+                                    for (int LoopCount = 0; LoopCount < CalloutProbabilityRegistrationCount[(int)CalloutAttribute.CalloutProbability]*Globals.Application.CalloutProbabilityModifier; LoopCount++)
+                                    {
+                                        RandomCalloutCache.Add(CalloutAttribute.Name);
+                                    }
+                                }
+
                                 AddCount++;
                             }
                         }
                     }
 
-                    Logger.Log(Assem.FullName + $" detected {AddCount} callouts and added them to the ForceACallout cache.");
+                    Logger.Log(Assem.GetName().Name + $" detected {AddCount} callouts and added them to the ForceACallout cache.");
                 }
             }
+
+            if(Globals.Application.CalloutProbability == true)
+                Logger.Log($"{RandomCalloutCache.Count} total probabilities registered in ForceACallout.");
         }
 
         internal static string StartRandomCallout()
@@ -76,6 +98,7 @@ namespace ForceACallout.Utils
                 string RandomCallout = RandomCalloutCache[RandomValue.Next(0, RandomCalloutCache.Count)];
 
                 Functions.StartCallout(RandomCallout);
+                Logger.Log($"Starting callout {RandomCallout}");
                 return RandomCallout;
             }
 

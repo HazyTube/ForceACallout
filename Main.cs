@@ -31,7 +31,6 @@ namespace ForceACallout
 
             //This sets the config path to /plugins/lspdfr for the ini file
             Globals.Application.ConfigPath = "Plugins/LSPDFR/";
-
         }
 
         public void DutyStateChange(bool OnDuty)
@@ -60,9 +59,8 @@ namespace ForceACallout
                     Logger.Log("Plugin Version v" + Globals.Application.CurrentVersion + " loaded successfully");
                 }
 
-                //Loads the config file (.ini file)
+                //Loads the config file (.ini file) 
                 Config.LoadConfig();
-
                 StartPlugin();
             }
         }
@@ -70,10 +68,10 @@ namespace ForceACallout
         private static void StartPlugin()
         {
             GameFiber.StartNew(delegate
-        {
-            Logger.DebugLog("New gamefiber started");
-            Core.RunPlugin();
-        });
+            {
+                Logger.DebugLog("New gamefiber started");
+                Core.RunPlugin();
+            }, "StartPlugin");
         }
 
         public override void Finally()
