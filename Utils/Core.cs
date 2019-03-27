@@ -5,7 +5,8 @@ Name: Force A Callout
 Released on: GitHub and LSPDFR
 
 Credits:
-Thanks to https://gist.githubusercontent.com/RiverGrande/d27b7506d5eb1372e53f1840a8a647c8/raw/a71c93eb007f9b35e3b1e376026624507779f40e/RandomCallouts.cs
+Thanks to LiverLande for this gist: https://gist.githubusercontent.com/RiverGrande/d27b7506d5eb1372e53f1840a8a647c8/raw/a71c93eb007f9b35e3b1e376026624507779f40e/RandomCallouts.cs
+Thanks to LiverLande for this amazing pull request: https://github.com/HazyTube/ForceACallout/pull/2
 Thanks to NoNameSet for helping with the on screen text box
 
 */
@@ -28,14 +29,14 @@ namespace ForceACallout.Utils
                 GameFiber.Yield();
 
                 //Checks if the modifier value is set to none
-                if(Globals.Controls.ForceCalloutModifier == System.Windows.Forms.Keys.None)
+                if (Globals.Controls.ForceCalloutModifier == System.Windows.Forms.Keys.None)
                 {
                     //Checks if the key to force a callout is pressed, then starts a random callout and debug logs something
                     if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey))
                     {
                         Logger.DebugLog("FoceCalloutKey pressed");
-                        RandomCallouts.StartRandomCallout();
-
+                        if (Functions.IsCalloutRunning() && Globals.Application.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
+                        else { RandomCallouts.StartRandomCallout(); }
                     }
                 }
                 else
@@ -44,7 +45,8 @@ namespace ForceACallout.Utils
                     if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey) && Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutModifier))
                     {
                         Logger.DebugLog("FoceCalloutKey + ModifierKey pressed");
-                        RandomCallouts.StartRandomCallout();
+                        if (Functions.IsCalloutRunning() && Globals.Application.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
+                        else { RandomCallouts.StartRandomCallout(); }
 
                     }
                 }

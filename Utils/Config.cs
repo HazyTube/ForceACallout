@@ -5,7 +5,8 @@ Name: Force A Callout
 Released on: GitHub and LSPDFR
 
 Credits:
-Thanks to https://gist.githubusercontent.com/RiverGrande/d27b7506d5eb1372e53f1840a8a647c8/raw/a71c93eb007f9b35e3b1e376026624507779f40e/RandomCallouts.cs
+Thanks to LiverLande for this gist: https://gist.githubusercontent.com/RiverGrande/d27b7506d5eb1372e53f1840a8a647c8/raw/a71c93eb007f9b35e3b1e376026624507779f40e/RandomCallouts.cs
+Thanks to LiverLande for this amazing pull request: https://github.com/HazyTube/ForceACallout/pull/2
 Thanks to NoNameSet for helping with the on screen text box
 
 */
@@ -50,53 +51,46 @@ namespace ForceACallout.Utils
 
             string FoceCalloutKey;
             string ForceCalloutModifier;
-            string DebugLogging;
             string AvailabilityKey;
             string AvailabilityModifier;
-            string AvailableForCalloutsText;
-            int RectangleAlpha;
 
-            //Reads the key and modifier to force a callout from the ini file
+            //KEYS
+            //Reads the keys and modifiers from the ini file
             FoceCalloutKey = settings.ReadString("Keybindings", "ForceCalloutKey", "X");
             ForceCalloutModifier = settings.ReadString("Keybindings", "ForceCalloutModifier", "None");
-
-            //Reads the value for debug logging from the ini file
-            DebugLogging = settings.ReadString("General", "DebugLogging", "False");
-
-            //Reads the key and modifier to set the player's availability from the ini file
             AvailabilityKey = settings.ReadString("Keybindings", "AvailabilityKey", "Z");
             AvailabilityModifier = settings.ReadString("Keybindings", "AvailabilityModifier", "None");
 
-            //Reads the value to enable or disable the on screen text
-            AvailableForCalloutsText = settings.ReadString("General", "AvailableForCalloutsText", "True");
-
-            //Reads the int for the rectangle alpha
-            RectangleAlpha = settings.ReadInt16("General", "RectangleAlpha", 200);
-
-            //Logs some things
-            Logger.Log("DebugLogging is set to " + DebugLogging);
-            Logger.Log("ForceCalloutKey is set to " + FoceCalloutKey);
-            Logger.Log("ForceCalloutModifier is set to " + ForceCalloutModifier);
-            Logger.Log("AvailabilityKey is set to " + AvailabilityKey);
-            Logger.Log("AvailabilityModifier is set to " + AvailabilityModifier);
-            Logger.Log("AvailableForCalloutsText is set to " + AvailableForCalloutsText);
-            Logger.Log("RectangleAlpha is set to " + RectangleAlpha);
-
-            //These convert strings to keys
+            //KEY CONVERTERS
+            //Converts strings to keys
             Globals.Controls.ForceCalloutKey = (Keys)kc.ConvertFromString(FoceCalloutKey);
             Globals.Controls.ForceCalloutModifier = (Keys)kc.ConvertFromString(ForceCalloutModifier);
-
             Globals.Controls.AvailabilityKey = (Keys)kc.ConvertFromString(AvailabilityKey);
             Globals.Controls.AvailabilityModifier = (Keys)kc.ConvertFromString(AvailabilityModifier);
 
-            //Converts a string to a bool
-            Globals.Application.DebugLogging = Convert.ToBoolean(DebugLogging);
+            //GENERAL
+            //Reads the values in the General section from the ini file
+            Globals.Application.DebugLogging = settings.ReadBoolean("General", "DebugLogging", false);
+            Globals.Application.AvailableForCalloutsText = settings.ReadBoolean("General", "AvailableForCalloutsText", true);
+            Globals.Application.RectangleAlpha = settings.ReadInt16("General", "RectangleAlpha", 200);
+            Globals.Application.CalloutProbability = settings.ReadBoolean("General", "CalloutProbability", true);
+            Globals.Application.CalloutProbabilityModifier = settings.ReadInt16("General", "CalloutProbabilityModifier", 1);
+            Globals.Application.StopCurrentCallout = settings.ReadBoolean("General", "StopCurrentCallout", true);
 
-            //Converts a string to a bool
-            Globals.Application.AvailableForCalloutsText = Convert.ToBoolean(AvailableForCalloutsText);
+            //Value setter
+            Globals.Application.SettingsLoaded = true;
 
-            //Assigns the rectangle alpha int to something
-            Globals.Application.RectangleAlpha = RectangleAlpha;
+            //Logs some things
+            Logger.Log("[KEYBINDINGS] ForceCalloutKey is set to " + FoceCalloutKey);
+            Logger.Log("[KEYBINDINGS] ForceCalloutModifier is set to " + ForceCalloutModifier);
+            Logger.Log("[KEYBINDINGS] AvailabilityKey is set to " + AvailabilityKey);
+            Logger.Log("[KEYBINDINGS] AvailabilityModifier is set to " + AvailabilityModifier);
+            Logger.Log("[GENERAL] DebugLogging is set to " + Globals.Application.DebugLogging);
+            Logger.Log("[GENERAL] AvailableForCalloutsText is set to " + Globals.Application.AvailableForCalloutsText);
+            Logger.Log("[GENERAL] RectangleAlpha is set to " + Globals.Application.RectangleAlpha);
+            Logger.Log("[GENERAL] CalloutProbability is set to " + Globals.Application.CalloutProbability);
+            Logger.Log("[GENERAL] CalloutProbabilityModifier is set to " + Globals.Application.CalloutProbabilityModifier);
+            Logger.Log("[GENERAL] StopCurrentCallout is set to " + Globals.Application.StopCurrentCallout);
         }
     }
 }

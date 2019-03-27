@@ -51,14 +51,15 @@
   <ItemGroup>
     <Reference Include="LSPD First Response, Version=0.4.39.22580, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLs\LSPD First Response.dll</HintPath>
+      <HintPath>..\..\..\DLL Refrences\LSPD First Response.dll</HintPath>
     </Reference>
-    <Reference Include="RAGENativeUI">
-      <HintPath>..\DLLs\RAGENativeUI.dll</HintPath>
+    <Reference Include="RAGENativeUI, Version=1.6.3.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\DLL Refrences\RAGENativeUI.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHookSDK, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLs\RagePluginHookSDK.dll</HintPath>
+      <HintPath>..\..\..\DLL Refrences\RagePluginHookSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -84,8 +85,11 @@
     <Compile Include="Utils\Updater.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ForceACallout.ini" />
+    <None Include="ForceACallout.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="LatestVersion" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
