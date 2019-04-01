@@ -39,6 +39,7 @@ namespace ForceACallout
             public static bool CalloutProbability { get; set; }
             public static int CalloutProbabilityModifier { get; set; }
             public static bool StopCurrentCallout { get; set; }
+            public static bool PLDCompatibility { get; set; }
         }
     }
 }

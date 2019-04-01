@@ -30,12 +30,30 @@ namespace ForceACallout.Utils
 
             //Checks if the option for the on screen text is set to true
             if (Globals.Application.AvailableForCalloutsText)
+            {
+                if (Globals.Application.PLDCompatibility == true)
+                {
+                    _availableRect = new ResRectangle(new Point(320, (int)(resolutionRatio.Height - 130)), new Size(200, 50), Color.FromArgb(Globals.Application.RectangleAlpha, Color.Black));
+                }
+                else
+                {
+                    _availableRect = new ResRectangle(new Point(320, (int)(resolutionRatio.Height - 67)), new Size(200, 50), Color.FromArgb(Globals.Application.RectangleAlpha, Color.Black));
+                }
+            }
 
-                _availableRect = new ResRectangle(new Point(320, (int)(resolutionRatio.Height - 67)), new Size(200, 50), Color.FromArgb(Globals.Application.RectangleAlpha, Color.Black));
+            if (Globals.Application.PLDCompatibility == true)
+            {
+                _availableText = new ResText("Available for calls: ",
+                    new Point(420, (int)(resolutionRatio.Height - 120)), 0.3f, Color.FromArgb(255, Color.White),
+                    Common.EFont.ChaletLondon, ResText.Alignment.Centered);
+            }
+            else
+            {
+                _availableText = new ResText("Available for calls: ",
+                    new Point(420, (int)(resolutionRatio.Height - 57)), 0.3f, Color.FromArgb(255, Color.White),
+                    Common.EFont.ChaletLondon, ResText.Alignment.Centered);
+            }
 
-            _availableText = new ResText("Available for calls: ",
-                new Point(420, (int)(resolutionRatio.Height - 57)), 0.3f, Color.FromArgb(255, Color.White),
-                Common.EFont.ChaletLondon, ResText.Alignment.Centered);
 
             Game.FrameRender += GameOnFrameRender;
         }

@@ -12,7 +12,6 @@ Thanks to NoNameSet for helping with the on screen text box
 */
 
 using Rage;
-using System;
 using System.Windows.Forms;
 
 namespace ForceACallout.Utils
@@ -76,6 +75,7 @@ namespace ForceACallout.Utils
             Globals.Application.CalloutProbability = settings.ReadBoolean("General", "CalloutProbability", true);
             Globals.Application.CalloutProbabilityModifier = settings.ReadInt16("General", "CalloutProbabilityModifier", 1);
             Globals.Application.StopCurrentCallout = settings.ReadBoolean("General", "StopCurrentCallout", true);
+            Globals.Application.PLDCompatibility = settings.ReadBoolean("General", "PLDCompatibility", false);
 
             //Value setter
             Globals.Application.SettingsLoaded = true;
@@ -91,6 +91,7 @@ namespace ForceACallout.Utils
             Logger.Log("[GENERAL] CalloutProbability is set to " + Globals.Application.CalloutProbability);
             Logger.Log("[GENERAL] CalloutProbabilityModifier is set to " + Globals.Application.CalloutProbabilityModifier);
             Logger.Log("[GENERAL] StopCurrentCallout is set to " + Globals.Application.StopCurrentCallout);
+            Logger.Log("[GENERAL] PLDCompatibility is set to " + Globals.Application.PLDCompatibility);
         }
     }
 }

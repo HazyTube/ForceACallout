@@ -15,7 +15,7 @@ using Rage;
 
 namespace ForceACallout.Utils
 {
-internal static class Logger
+    internal static class Logger
     {
         //Only include the plugin name.
         private const string LogPrefix = "ForceACallout";

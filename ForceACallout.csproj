@@ -85,9 +85,6 @@
     <Compile Include="Utils\Updater.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ForceACallout.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="LatestVersion" />
   </ItemGroup>
   <ItemGroup />
