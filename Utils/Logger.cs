@@ -31,7 +31,7 @@ namespace ForceACallout.Utils
         //Log line that will only run if the setting for debug logging is enabled
         internal static void DebugLog(string LogLine)
         {
-            if (Globals.Application.DebugLogging == true)
+            if (Globals.Config.DebugLogging == true)
             {
                 string log = string.Format("[{0}][DEBUG]: {1}", LogPrefix, LogLine);
 

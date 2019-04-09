@@ -24,6 +24,24 @@ namespace ForceACallout
 
             public static Keys AvailabilityKey { get; set; }
             public static Keys AvailabilityModifier { get; set; }
+
+            public static Keys LSPDFRAcceptCalloutKey { get; set; }
+        }
+
+        internal static class Config
+        {
+            //GENERAL
+            public static bool DebugLogging { get; set; }
+            public static bool AvailableForCalloutsText { get; set; }
+            public static int RectangleAlpha { get; set; }
+            public static bool PLDCompatibility { get; set; }
+
+            //CALLOUTS
+            public static bool CalloutProbability { get; set; }
+            public static int CalloutProbabilityModifier { get; set; }
+            public static bool StopCurrentCallout { get; set; }
+            public static bool AutoChangeAvailability { get; set; }
+            public static bool OnlySetToUnavailable { get; set; }
         }
 
         internal static class Application
@@ -32,14 +50,12 @@ namespace ForceACallout
             public static string CurrentVersion { get; set; }
             public static string LatestVersion { get; set; }
             public static bool SettingsLoaded { get; set; }
+            public static string LSPDFRFolder { get; set; }
+        }
 
-            public static bool DebugLogging { get; set; }
-            public static bool AvailableForCalloutsText { get; set; }
-            public static int RectangleAlpha { get; set; }
-            public static bool CalloutProbability { get; set; }
-            public static int CalloutProbabilityModifier { get; set; }
-            public static bool StopCurrentCallout { get; set; }
-            public static bool PLDCompatibility { get; set; }
+        internal static class Status
+        {
+            public static bool FirstEvent { get; set; }
         }
     }
 }

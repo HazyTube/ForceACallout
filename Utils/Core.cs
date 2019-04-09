@@ -11,6 +11,7 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
+using System;
 using LSPD_First_Response.Mod.API;
 using Rage;
 
@@ -18,6 +19,9 @@ namespace ForceACallout.Utils
 {
     internal static class Core
     {
+        private static EventHandler OnCalloutAccepted;
+        private static LHandle _onCalloutAccepted;
+
         public static void RunPlugin()
         {
             //Loads the on screen text
@@ -28,6 +32,25 @@ namespace ForceACallout.Utils
             {
                 GameFiber.Yield();
 
+                //Checks if the option to automatically change the availability is set to true
+                if (Globals.Config.AutoChangeAvailability)
+                {
+                    //If a callout is being displayed
+                    if (Functions.IsCalloutRunning())
+                    {
+                        //Checks if the player presses Y to accept the callout
+                        if (Game.IsKeyDown(Globals.Controls.LSPDFRAcceptCalloutKey))
+                        {
+                            //Sets the availability of the player to unavailable
+                            Functions.SetPlayerAvailableForCalls(false);
+                        }
+                    }
+                    else if (Globals.Config.OnlySetToUnavailable == false)
+                    {
+                        Functions.SetPlayerAvailableForCalls(true);
+                    }
+                }
+
                 //Checks if the modifier value is set to none
                 if (Globals.Controls.ForceCalloutModifier == System.Windows.Forms.Keys.None)
                 {
@@ -35,7 +58,7 @@ namespace ForceACallout.Utils
                     if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey))
                     {
                         Logger.DebugLog("FoceCalloutKey pressed");
-                        if (Functions.IsCalloutRunning() && Globals.Application.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
+                        if (Functions.IsCalloutRunning() && Globals.Config.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
                         else { RandomCallouts.StartRandomCallout(); }
                     }
                 }
@@ -45,19 +68,20 @@ namespace ForceACallout.Utils
                     if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey) && Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutModifier))
                     {
                         Logger.DebugLog("FoceCalloutKey + ModifierKey pressed");
-                        if (Functions.IsCalloutRunning() && Globals.Application.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
+                        if (Functions.IsCalloutRunning() && Globals.Config.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
                         else { RandomCallouts.StartRandomCallout(); }
-
                     }
                 }
 
                 //Checks if the modifier value is set to none
-                if(Globals.Controls.AvailabilityModifier == System.Windows.Forms.Keys.None)
+                if (Globals.Controls.AvailabilityModifier == System.Windows.Forms.Keys.None)
                 {
                     //Checks if the key to set the player's availabilityKey is pressed, then logs something
                     if (Game.IsKeyDown(Globals.Controls.AvailabilityKey))
                     {
                         Logger.DebugLog("AvailabilityKey Pressed");
+
+                        Globals.Status.FirstEvent = true;
 
                         //Checks if the player is available for calls
                         if (Functions.IsPlayerAvailableForCalls())
@@ -66,7 +90,7 @@ namespace ForceACallout.Utils
                             Functions.SetPlayerAvailableForCalls(false);
 
                             //If the on screen text is set to false it will show a notification instead
-                            if (Globals.Application.AvailableForCalloutsText == false)
+                            if (Globals.Config.AvailableForCalloutsText == false)
                             {
                                 Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
                             }
@@ -80,7 +104,7 @@ namespace ForceACallout.Utils
                             Functions.SetPlayerAvailableForCalls(true);
 
                             //If the on screen text is set to false it will show a notification instead
-                            if (Globals.Application.AvailableForCalloutsText == false)
+                            if (Globals.Config.AvailableForCalloutsText == false)
                             {
                                 Game.DisplayNotification("You are now ~g~available~s~ for calls");
                             }
@@ -97,13 +121,15 @@ namespace ForceACallout.Utils
                     {
                         Logger.DebugLog("AvailabilityKey + ModifierKey Pressed");
 
+                        Globals.Status.FirstEvent = true;
+
                         //If the player is available for calls, it will set the availability to false
                         if (Functions.IsPlayerAvailableForCalls())
                         {
                             Functions.SetPlayerAvailableForCalls(false);
 
                             //If the on screen text is set to false it will show a notification instead
-                            if (Globals.Application.AvailableForCalloutsText == false)
+                            if (Globals.Config.AvailableForCalloutsText == false)
                             {
                                 Game.DisplayNotification("You are now ~r~unavailable~s~ for calls");
                             }
@@ -117,7 +143,7 @@ namespace ForceACallout.Utils
                             Functions.SetPlayerAvailableForCalls(true);
 
                             //If the on screen text is set to false it will show a notification instead
-                            if (Globals.Application.AvailableForCalloutsText == false)
+                            if (Globals.Config.AvailableForCalloutsText == false)
                             {
                                 Game.DisplayNotification("You are now ~g~available~s~ for calls");
                             }

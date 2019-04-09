@@ -29,6 +29,8 @@ namespace ForceACallout.Utils
         {
             InitializationFile settings = initialiseFile(Globals.Application.ConfigPath + "ForceACallout.ini");
 
+            InitializationFile LSPDFRKeys = initialiseFile(Globals.Application.LSPDFRFolder + "keys.ini");
+
             var tmp = "";
 
             //We're just checking if the string is set to nothing because this is an indicator that it wasn't set in the config file thus something is wrong.
@@ -45,6 +47,9 @@ namespace ForceACallout.Utils
             //Reads the ini file
             InitializationFile settings = initialiseFile(Globals.Application.ConfigPath + "ForceACallout.ini");
 
+            //Reads the LSPDFR keys.ini file
+            InitializationFile LSPDFRKeys = initialiseFile(Globals.Application.LSPDFRFolder + "keys.ini");
+
             //Makes a new converter to convert strings to keys
             KeysConverter kc = new KeysConverter();
 
@@ -52,6 +57,11 @@ namespace ForceACallout.Utils
             string ForceCalloutModifier;
             string AvailabilityKey;
             string AvailabilityModifier;
+            string LSPDFRAcceptCalloutKey;
+
+            //LSPDFR Keys
+            //Reads the keys set in the lspdfr keys.ini file
+            LSPDFRAcceptCalloutKey = LSPDFRAcceptCalloutKey = LSPDFRKeys.ReadString("", "ACCEPT_CALLOUT_Key", "Y");
 
             //KEYS
             //Reads the keys and modifiers from the ini file
@@ -66,16 +76,22 @@ namespace ForceACallout.Utils
             Globals.Controls.ForceCalloutModifier = (Keys)kc.ConvertFromString(ForceCalloutModifier);
             Globals.Controls.AvailabilityKey = (Keys)kc.ConvertFromString(AvailabilityKey);
             Globals.Controls.AvailabilityModifier = (Keys)kc.ConvertFromString(AvailabilityModifier);
+            Globals.Controls.LSPDFRAcceptCalloutKey = (Keys) kc.ConvertFromString(LSPDFRAcceptCalloutKey);
 
             //GENERAL
             //Reads the values in the General section from the ini file
-            Globals.Application.DebugLogging = settings.ReadBoolean("General", "DebugLogging", false);
-            Globals.Application.AvailableForCalloutsText = settings.ReadBoolean("General", "AvailableForCalloutsText", true);
-            Globals.Application.RectangleAlpha = settings.ReadInt16("General", "RectangleAlpha", 200);
-            Globals.Application.CalloutProbability = settings.ReadBoolean("General", "CalloutProbability", true);
-            Globals.Application.CalloutProbabilityModifier = settings.ReadInt16("General", "CalloutProbabilityModifier", 1);
-            Globals.Application.StopCurrentCallout = settings.ReadBoolean("General", "StopCurrentCallout", true);
-            Globals.Application.PLDCompatibility = settings.ReadBoolean("General", "PLDCompatibility", false);
+            Globals.Config.DebugLogging = settings.ReadBoolean("General", "DebugLogging", false);
+            Globals.Config.AvailableForCalloutsText = settings.ReadBoolean("General", "AvailableForCalloutsText", true);
+            Globals.Config.RectangleAlpha = settings.ReadInt16("General", "RectangleAlpha", 200);
+            Globals.Config.PLDCompatibility = settings.ReadBoolean("General", "PLDCompatibility", false);
+
+            //CALLOUTS
+            //Reads the values in the Callouts section from the ini file
+            Globals.Config.CalloutProbability = settings.ReadBoolean("Callouts", "CalloutProbability", true);
+            Globals.Config.CalloutProbabilityModifier = settings.ReadInt16("Callouts", "CalloutProbabilityModifier", 1);
+            Globals.Config.StopCurrentCallout = settings.ReadBoolean("Callouts", "StopCurrentCallout", true);
+            Globals.Config.AutoChangeAvailability = settings.ReadBoolean("Callouts", "AutoChangeAvailability", true);
+            Globals.Config.OnlySetToUnavailable = settings.ReadBoolean("Callouts", "OnlySetToUnavailable", false);
 
             //Value setter
             Globals.Application.SettingsLoaded = true;
@@ -85,13 +101,16 @@ namespace ForceACallout.Utils
             Logger.Log("[KEYBINDINGS] ForceCalloutModifier is set to " + ForceCalloutModifier);
             Logger.Log("[KEYBINDINGS] AvailabilityKey is set to " + AvailabilityKey);
             Logger.Log("[KEYBINDINGS] AvailabilityModifier is set to " + AvailabilityModifier);
-            Logger.Log("[GENERAL] DebugLogging is set to " + Globals.Application.DebugLogging);
-            Logger.Log("[GENERAL] AvailableForCalloutsText is set to " + Globals.Application.AvailableForCalloutsText);
-            Logger.Log("[GENERAL] RectangleAlpha is set to " + Globals.Application.RectangleAlpha);
-            Logger.Log("[GENERAL] CalloutProbability is set to " + Globals.Application.CalloutProbability);
-            Logger.Log("[GENERAL] CalloutProbabilityModifier is set to " + Globals.Application.CalloutProbabilityModifier);
-            Logger.Log("[GENERAL] StopCurrentCallout is set to " + Globals.Application.StopCurrentCallout);
-            Logger.Log("[GENERAL] PLDCompatibility is set to " + Globals.Application.PLDCompatibility);
+            Logger.Log("[GENERAL] DebugLogging is set to " + Globals.Config.DebugLogging);
+            Logger.Log("[GENERAL] AvailableForCalloutsText is set to " + Globals.Config.AvailableForCalloutsText);
+            Logger.Log("[GENERAL] RectangleAlpha is set to " + Globals.Config.RectangleAlpha);
+            Logger.Log("[GENERAL] CalloutProbability is set to " + Globals.Config.CalloutProbability);
+            Logger.Log("[GENERAL] CalloutProbabilityModifier is set to " + Globals.Config.CalloutProbabilityModifier);
+            Logger.Log("[GENERAL] StopCurrentCallout is set to " + Globals.Config.StopCurrentCallout);
+            Logger.Log("[GENERAL] PLDCompatibility is set to " + Globals.Config.PLDCompatibility);
+            Logger.Log("[GENERAL] AutoChangeAvailability is set to " + Globals.Config.AutoChangeAvailability);
+            Logger.Log("[GENERAL] OnlySetToUnavailable is set to " + Globals.Config.OnlySetToUnavailable);
+            Game.LogTrivial("-----------------------------------------------------------------------------------------------------");
         }
     }
 }

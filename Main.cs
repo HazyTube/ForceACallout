@@ -34,6 +34,8 @@ namespace ForceACallout
             //This sets the config path to /plugins/lspdfr for the ini file
             Globals.Application.ConfigPath = "Plugins/LSPDFR/";
 
+            Globals.Application.LSPDFRFolder = "lspdfr";
+
         }
 
         public void DutyStateChange(bool OnDuty)
@@ -41,20 +43,21 @@ namespace ForceACallout
             //This only runs if the player is onDuty
             if (OnDuty)
             {
+                Game.LogTrivial("--------------------------------------ForceACallout startup log--------------------------------------");
                 //Checks for an update
                 int versionStatus = Updater.CheckUpdate();
                 if (versionStatus == -1)
                 {
                     Notifier.Notify("Plugin is out of date! (Current Version: ~r~" + Globals.Application.CurrentVersion + " ~s~) - (Latest Version: ~g~" + Globals.Application.LatestVersion + "~s~) Please update the plugin!");
-                    Logger.Log("Plugin is out of date. (Current Version: " + Globals.Application.CurrentVersion + ") - (Latest Version: " + Globals.Application.LatestVersion + ")");
+                    Logger.Log("[WARNING] Plugin is out of date. (Current Version: " + Globals.Application.CurrentVersion + ") - (Latest Version: " + Globals.Application.LatestVersion + ")");
                 }
                 else if (versionStatus == -2)
                 {
-                    Logger.Log("There was an issue checking plugin versions, the plugin may be out of date!");
+                    Logger.Log("[WARNING] There was an issue checking plugin versions, the plugin may be out of date!");
                 }
                 else if (versionStatus == 1)
                 {
-                    Logger.Log("Current version of plugin is higher than the version reported on the official GitHub, this could be an error that you may want to report!");
+                    Logger.Log("[WARNING] Current version of plugin is higher than the version reported on the official GitHub, this could be an error that you may want to report!");
                 }
                 else
                 {

@@ -65,12 +65,12 @@ namespace ForceACallout.Utils
 
                             if (CalloutAttribute != null)
                             {
-                                if (Globals.Application.CalloutProbability == false)
+                                if (Globals.Config.CalloutProbability == false)
                                     RandomCalloutCache.Add(CalloutAttribute.Name);
 
                                 else
                                 {
-                                    for (int LoopCount = 0; LoopCount < CalloutProbabilityRegistrationCount[(int)CalloutAttribute.CalloutProbability] * Globals.Application.CalloutProbabilityModifier; LoopCount++)
+                                    for (int LoopCount = 0; LoopCount < CalloutProbabilityRegistrationCount[(int)CalloutAttribute.CalloutProbability] * Globals.Config.CalloutProbabilityModifier; LoopCount++)
                                     {
                                         RandomCalloutCache.Add(CalloutAttribute.Name);
                                     }
@@ -84,7 +84,7 @@ namespace ForceACallout.Utils
                 }
             }
 
-            if (Globals.Application.CalloutProbability == true)
+            if (Globals.Config.CalloutProbability == true)
             {
                 Logger.Log($"{RandomCalloutCache.Count} total probabilities registered in ForceACallout.");
             }
