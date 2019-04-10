@@ -11,7 +11,6 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
-using System;
 using LSPD_First_Response.Mod.API;
 using Rage;
 
@@ -19,9 +18,6 @@ namespace ForceACallout.Utils
 {
     internal static class Core
     {
-        private static EventHandler OnCalloutAccepted;
-        private static LHandle _onCalloutAccepted;
-
         public static void RunPlugin()
         {
             //Loads the on screen text
@@ -32,23 +28,10 @@ namespace ForceACallout.Utils
             {
                 GameFiber.Yield();
 
-                //Checks if the option to automatically change the availability is set to true
-                if (Globals.Config.AutoChangeAvailability)
+                if (Globals.Config.AutoChangeAvailability == true && Functions.IsCalloutRunning() && Game.IsKeyDownRightNow(Globals.Controls.LSPDFRAcceptCalloutKey))
                 {
-                    //If a callout is being displayed
-                    if (Functions.IsCalloutRunning())
-                    {
-                        //Checks if the player presses Y to accept the callout
-                        if (Game.IsKeyDown(Globals.Controls.LSPDFRAcceptCalloutKey))
-                        {
-                            //Sets the availability of the player to unavailable
-                            Functions.SetPlayerAvailableForCalls(false);
-                        }
-                    }
-                    else if (Globals.Config.OnlySetToUnavailable == false)
-                    {
-                        Functions.SetPlayerAvailableForCalls(true);
-                    }
+                    Functions.SetPlayerAvailableForCalls(false);
+                    Logger.DebugLog("Player accepted callout and AutoChangeAvailability is set to " + Globals.Config.AutoChangeAvailability + ", setting player to unavailable");
                 }
 
                 //Checks if the modifier value is set to none

@@ -14,7 +14,6 @@ Thanks to NoNameSet for helping with the on screen text box
 using Rage;
 using LSPD_First_Response.Mod.API;
 using ForceACallout.Utils;
-using System;
 
 namespace ForceACallout
 {
@@ -48,7 +47,7 @@ namespace ForceACallout
                 int versionStatus = Updater.CheckUpdate();
                 if (versionStatus == -1)
                 {
-                    Notifier.Notify("Plugin is out of date! (Current Version: ~r~" + Globals.Application.CurrentVersion + " ~s~) - (Latest Version: ~g~" + Globals.Application.LatestVersion + "~s~) Please update the plugin!");
+                    Notifier.StartUpNotificationOutdated();
                     Logger.Log("[WARNING] Plugin is out of date. (Current Version: " + Globals.Application.CurrentVersion + ") - (Latest Version: " + Globals.Application.LatestVersion + ")");
                 }
                 else if (versionStatus == -2)

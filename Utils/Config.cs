@@ -90,8 +90,7 @@ namespace ForceACallout.Utils
             Globals.Config.CalloutProbability = settings.ReadBoolean("Callouts", "CalloutProbability", true);
             Globals.Config.CalloutProbabilityModifier = settings.ReadInt16("Callouts", "CalloutProbabilityModifier", 1);
             Globals.Config.StopCurrentCallout = settings.ReadBoolean("Callouts", "StopCurrentCallout", true);
-            Globals.Config.AutoChangeAvailability = settings.ReadBoolean("Callouts", "AutoChangeAvailability", true);
-            Globals.Config.OnlySetToUnavailable = settings.ReadBoolean("Callouts", "OnlySetToUnavailable", false);
+            Globals.Config.AutoChangeAvailability = settings.ReadBoolean("Callouts", "AutoChangeAvailability", false);
 
             //Value setter
             Globals.Application.SettingsLoaded = true;
@@ -109,7 +108,6 @@ namespace ForceACallout.Utils
             Logger.Log("[GENERAL] StopCurrentCallout is set to " + Globals.Config.StopCurrentCallout);
             Logger.Log("[GENERAL] PLDCompatibility is set to " + Globals.Config.PLDCompatibility);
             Logger.Log("[GENERAL] AutoChangeAvailability is set to " + Globals.Config.AutoChangeAvailability);
-            Logger.Log("[GENERAL] OnlySetToUnavailable is set to " + Globals.Config.OnlySetToUnavailable);
             Game.LogTrivial("-----------------------------------------------------------------------------------------------------");
         }
     }

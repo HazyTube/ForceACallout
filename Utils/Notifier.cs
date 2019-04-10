@@ -39,5 +39,11 @@ namespace ForceACallout.Utils
             Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ~o~by HazTybe", "~b~Has been loaded.");
             Logger.DebugLog("Startup Notification Sent.");
         }
+
+        internal static void StartUpNotificationOutdated()
+        {
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ~o~by HazTybe", "~r~Plugin is out of date! Please update the plugin.");
+            Logger.DebugLog("Startup Notification (Outdated) Sent.");
+        }
     }
 }

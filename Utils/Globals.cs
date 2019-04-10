@@ -41,7 +41,6 @@ namespace ForceACallout
             public static int CalloutProbabilityModifier { get; set; }
             public static bool StopCurrentCallout { get; set; }
             public static bool AutoChangeAvailability { get; set; }
-            public static bool OnlySetToUnavailable { get; set; }
         }
 
         internal static class Application
