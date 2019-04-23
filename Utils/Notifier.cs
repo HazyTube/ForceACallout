@@ -36,14 +36,26 @@ namespace ForceACallout.Utils
 
         internal static void StartUpNotification()
         {
-            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ~o~by HazTybe", "~b~Has been loaded.");
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ~o~by HazyTube", "~b~Has been loaded.");
             Logger.DebugLog("Startup Notification Sent.");
         }
 
         internal static void StartUpNotificationOutdated()
         {
-            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ~o~by HazTybe", "~r~Plugin is out of date! Please update the plugin.");
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ~o~by HazyTube", "~r~Plugin is out of date! Please update the plugin.");
             Logger.DebugLog("Startup Notification (Outdated) Sent.");
+        }
+        
+        internal static void StartUpNotificationBeta()
+        {
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + Globals.Application.CurrentBetaVersion + "~s~ ~o~by HazyTube", "~b~Has been loaded.~s~ \nPlugin is in beta!");
+            Logger.DebugLog("Startup Notification (Beta) Sent.");
+        }
+
+        internal static void StartUpNotificationBetaOutdated()
+        {
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", NotificationPrefix, "~y~v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + Globals.Application.CurrentBetaVersion + "~s~ ~o~by HazyTube", $"~r~Plugin is out of date!~s~ \nPlease download the latest beta version from GitHub. \nLatest Version: {Globals.Application.LatestVersion}{Globals.Application.LatestBetaVersion}");
+            Logger.DebugLog("Startup Notification (Beta Outdated) Sent.");
         }
     }
 }

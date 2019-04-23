@@ -11,10 +11,13 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
+using System;
+using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using ForceACallout.Utils;
 
+[assembly: Rage.Attributes.Plugin("ForceACallout", Description = "Lets players start a random callout by pressing a key.", Author = "HazyTube")]
 namespace ForceACallout
 {
     public class Main : Plugin
@@ -22,10 +25,24 @@ namespace ForceACallout
         //this initializes the plugin
         public override void Initialize()
         {
+            //IMPORTANT! This will set if the plugin is in beta or not, and also sets the beta version
+            Globals.Application.IsPluginInBeta = false;
+            Globals.Application.CurrentBetaVersion = "-b1";
+            //------------------------------------------------------------------------------------------
+            
+            Globals.Application.PluginName = "ForceACallout";
+            
             Functions.OnOnDutyStateChanged += DutyStateChange;
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LSPDFRResolveEventHandler);
 
-            //Simple log that let's the user know the plugin loaded succesfully + the assembly version
-            Logger.Log("ForceACallout " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " has been initialised.");
+            if (Globals.Application.IsPluginInBeta == true)
+            {
+                Logger.Log($"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version.ToString()}{Globals.Application.CurrentBetaVersion} has been  initialized.");
+            }
+            else
+            {
+                Logger.Log($"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version.ToString()} has been  initialized.");
+            }
 
             //This sets the currentversion
             Globals.Application.CurrentVersion = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
@@ -42,28 +59,53 @@ namespace ForceACallout
             //This only runs if the player is onDuty
             if (OnDuty)
             {
-                Game.LogTrivial("--------------------------------------ForceACallout startup log--------------------------------------");
-                //Checks for an update
-                int versionStatus = Updater.CheckUpdate();
-                if (versionStatus == -1)
+                Game.LogTrivial($"--------------------------------------{Globals.Application.PluginName} startup log--------------------------------------");
+
+                if (Globals.Application.IsPluginInBeta == false)
                 {
-                    Notifier.StartUpNotificationOutdated();
-                    Logger.Log("[WARNING] Plugin is out of date. (Current Version: " + Globals.Application.CurrentVersion + ") - (Latest Version: " + Globals.Application.LatestVersion + ")");
-                }
-                else if (versionStatus == -2)
-                {
-                    Logger.Log("[WARNING] There was an issue checking plugin versions, the plugin may be out of date!");
-                }
-                else if (versionStatus == 1)
-                {
-                    Logger.Log("[WARNING] Current version of plugin is higher than the version reported on the official GitHub, this could be an error that you may want to report!");
-                }
-                else
-                {
-                    Notifier.StartUpNotification();
-                    Logger.Log("Plugin Version v" + Globals.Application.CurrentVersion + " loaded successfully");
+                    //Checks for an update
+                    int versionStatus = Updater.CheckUpdate();
+
+                    if (versionStatus == -1)
+                    {
+                        Notifier.StartUpNotificationOutdated();
+                        Logger.Log($"Plugin is out of date. (Current Version: {Globals.Application.CurrentVersion}) - (Latest Version: {Globals.Application.LatestVersion})");
+                    }
+                    else if (versionStatus == -2)
+                    {
+                        Logger.Log("There was an issue checking plugin versions, the plugin may be out of date!");
+                    }
+                    else if (versionStatus == 1)
+                    {
+                        Notifier.StartUpNotification();
+                        Logger.Log($"Plugin version v{Globals.Application.CurrentVersion} loaded succesfully");
+                    }
                 }
 
+                if (Globals.Application.IsPluginInBeta == true)
+                {
+                    //Checks for an update
+                    int betaVersionStatus = Updater.CheckBetaUpdate();
+                    int versionStatus = Updater.CheckUpdate();
+
+                    if (betaVersionStatus == -1 || versionStatus == -1)
+                    {
+                        Notifier.StartUpNotificationBetaOutdated();
+                        Logger.Log($"Plugin is out of date.");
+                        Logger.Log($"(Current Beta Version: {Globals.Application.CurrentVersion}{Globals.Application.CurrentBetaVersion})");
+                        Logger.Log($"(Latest Beta Version: {Globals.Application.LatestVersion}{Globals.Application.LatestBetaVersion})");
+                    }
+                    else if (betaVersionStatus == -2 || betaVersionStatus == 0 || versionStatus == -2)
+                    {
+                        Logger.Log("There was an issue checking plugin versions, the plugin may be out of date!");
+                    }
+                    else if (betaVersionStatus == 1 || versionStatus == 1)
+                    {
+                        Notifier.StartUpNotificationBeta();
+                        Logger.Log($"Plugin Version v{Globals.Application.CurrentVersion}{Globals.Application.CurrentBetaVersion} loaded successfully");
+                        Logger.Log("Plugin is in beta!");
+                    }
+}
                 //Loads the config file (.ini file)
                 Config.LoadConfig();
 
@@ -85,5 +127,25 @@ namespace ForceACallout
             Logger.Log("ForceACallout has been unloaded");
         }
 
+        public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
+        {
+            foreach (Assembly allUserPlugin in Functions.GetAllUserPlugins())
+            {
+                if (args.Name.ToLower().Contains(allUserPlugin.GetName().Name.ToLower()))
+                    return allUserPlugin;
+            }
+            return (Assembly) null;
+        }
+
+        public static bool IsLSPDFRPluginRunning(string Plugin, Version minversion = null)
+        {
+            foreach (Assembly allUserPlugin in Functions.GetAllUserPlugins())
+            {
+                AssemblyName name = allUserPlugin.GetName();
+                if (name.Name.ToLower() == Plugin.ToLower() && (minversion == (Version) null || name.Version.CompareTo(minversion) >= 0))
+                    return true;
+            }
+            return false;
+        }
     }
 }

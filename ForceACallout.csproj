@@ -49,6 +49,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CalloutManager, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>E:\Steam\steamapps\common\Grand Theft Auto V\plugins\LSPDFR\CalloutManager.dll</HintPath>
+    </Reference>
     <Reference Include="LSPD First Response, Version=0.4.39.22580, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\DLL Refrences\LSPD First Response.dll</HintPath>
@@ -88,8 +91,11 @@
     <Content Include="ForceACallout.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="LatestVersion" />
+    <Content Include="PluginVersionInfo\LatestBetaVersion" />
+    <Content Include="PluginVersionInfo\LatestBetaVersionPrefix" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="PluginVersionInfo\LatestVersion" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

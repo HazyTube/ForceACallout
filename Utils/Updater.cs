@@ -19,7 +19,6 @@ namespace ForceACallout.Utils
 {
     internal static class Updater
     {
-        //creates a new webclient
         private static readonly WebClient wc = new WebClient();
 
         public static int CheckUpdate()
@@ -27,24 +26,29 @@ namespace ForceACallout.Utils
             string response = null;
 
             try
-            { 
-                //Gets the latest version from a file on github
-                Logger.DebugLog("Fetching latest plugin version from GitHub");
-                response = wc.DownloadStringTaskAsync(new Uri("https://raw.githubusercontent.com/HazyTube/ForceACallout/master/LatestVersion")).Result;
+            {
+                Logger.Log("Fetching latest plugin version from GitHub");
+                if (Globals.Application.IsPluginInBeta == false)
+                {
+                    response = wc.DownloadStringTaskAsync(new Uri("https://github.com/HazyTube/ForceACallout/blob/master/PluginVersionInfo/LatestVersion")).Result;
+                }
+                else if (Globals.Application.IsPluginInBeta == true)
+                {
+                    response = wc.DownloadStringTaskAsync(new Uri("https://raw.githubusercontent.com/HazyTube/ForceACallout/master/PluginVersionInfo/LatestBetaVersion")).Result;
+                }
             }
             catch (Exception)
             {
-                //Logs something if there is an exception
-                Game.LogTrivial("Checking version of plugin 'ForceACallout' Failed");
+                Logger.Log($"Checking version of plugin {Globals.Application.PluginName} Failed");
             }
 
-            //If we get a null response, the download failed and return -2 and inform the user that the download failed
+            //If we get a null respone then the download failed and we just return -2 and inform user of failing the download
             if (string.IsNullOrWhiteSpace(response))
             {
                 return -2;
             }
 
-            Globals.Application.LatestVersion = response;
+            Globals.Application.LatestVersion = response.Trim();
 
             Version current = new Version(Globals.Application.CurrentVersion);
             Version latest = new Version(Globals.Application.LatestVersion);
@@ -66,5 +70,45 @@ namespace ForceACallout.Utils
                 return 0;
             }
         }
-    }
+
+        public static int CheckBetaUpdate()
+        {
+            string LatestBetaResponse = null;
+
+            //This gets the latest beta prefix
+            try
+            {
+                Logger.Log("Fetching latest beta version from GitHub");
+                LatestBetaResponse = wc.DownloadStringTaskAsync(new Uri("https://raw.githubusercontent.com/HazyTube/ForceACallout/master/PluginVersionInfo/LatestBetaVersionPrefix")).Result;
+            }
+            catch (Exception)
+            {
+                Logger.Log($"Getting latest beta version of plugin {Globals.Application.PluginName} Failed");
+            }
+
+            //If we get a null respone then the download failed and we just return -2 and inform user of failing the download
+            if (string.IsNullOrWhiteSpace(LatestBetaResponse))
+            {
+                return -2;
+            }
+
+            Globals.Application.LatestBetaVersion = LatestBetaResponse.Trim();
+
+            string current = Globals.Application.CurrentBetaVersion;
+            string latest = Globals.Application.LatestBetaVersion;
+
+            if (current == latest)
+            {
+                return 1;
+            }
+            else if (current != latest)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+}
 }

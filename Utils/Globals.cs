@@ -39,7 +39,6 @@ namespace ForceACallout
             //CALLOUTS
             public static bool CalloutProbability { get; set; }
             public static int CalloutProbabilityModifier { get; set; }
-            public static bool StopCurrentCallout { get; set; }
             public static bool AutoChangeAvailability { get; set; }
         }
 
@@ -50,6 +49,12 @@ namespace ForceACallout
             public static string LatestVersion { get; set; }
             public static bool SettingsLoaded { get; set; }
             public static string LSPDFRFolder { get; set; }
+            public static string PluginName { get; set; }
+            
+            //Beta stuff
+            public static bool IsPluginInBeta { get; set; }
+            public static string CurrentBetaVersion { get; set; }
+            public static string LatestBetaVersion { get; set; }
         }
 
         internal static class Status

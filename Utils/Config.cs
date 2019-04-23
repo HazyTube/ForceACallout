@@ -89,7 +89,6 @@ namespace ForceACallout.Utils
             //Reads the values in the Callouts section from the ini file
             Globals.Config.CalloutProbability = settings.ReadBoolean("Callouts", "CalloutProbability", true);
             Globals.Config.CalloutProbabilityModifier = settings.ReadInt16("Callouts", "CalloutProbabilityModifier", 1);
-            Globals.Config.StopCurrentCallout = settings.ReadBoolean("Callouts", "StopCurrentCallout", true);
             Globals.Config.AutoChangeAvailability = settings.ReadBoolean("Callouts", "AutoChangeAvailability", false);
 
             //Value setter
@@ -105,7 +104,6 @@ namespace ForceACallout.Utils
             Logger.Log("[GENERAL] RectangleAlpha is set to " + Globals.Config.RectangleAlpha);
             Logger.Log("[GENERAL] CalloutProbability is set to " + Globals.Config.CalloutProbability);
             Logger.Log("[GENERAL] CalloutProbabilityModifier is set to " + Globals.Config.CalloutProbabilityModifier);
-            Logger.Log("[GENERAL] StopCurrentCallout is set to " + Globals.Config.StopCurrentCallout);
             Logger.Log("[GENERAL] PLDCompatibility is set to " + Globals.Config.PLDCompatibility);
             Logger.Log("[GENERAL] AutoChangeAvailability is set to " + Globals.Config.AutoChangeAvailability);
             Game.LogTrivial("-----------------------------------------------------------------------------------------------------");

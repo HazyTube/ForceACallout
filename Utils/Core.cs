@@ -38,21 +38,19 @@ namespace ForceACallout.Utils
                 if (Globals.Controls.ForceCalloutModifier == System.Windows.Forms.Keys.None)
                 {
                     //Checks if the key to force a callout is pressed, then starts a random callout and debug logs something
-                    if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey))
+                    if (Game.IsKeyDown(Globals.Controls.ForceCalloutKey))
                     {
-                        Logger.DebugLog("FoceCalloutKey pressed");
-                        if (Functions.IsCalloutRunning() && Globals.Config.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
-                        else { RandomCallouts.StartRandomCallout(); }
+                        Logger.DebugLog("ForceCalloutKey pressed");
+                        RandomCallouts.StartRandomCallout();
                     }
                 }
                 else
                 {
                     //If the modifier value is set to something else it will check if the key and modifier is pressed to force a callout, then starts a random callout and logs something
-                    if (Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutKey) && Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutModifier))
+                    if (Game.IsKeyDown(Globals.Controls.ForceCalloutKey) && Game.IsKeyDownRightNow(Globals.Controls.ForceCalloutModifier))
                     {
-                        Logger.DebugLog("FoceCalloutKey + ModifierKey pressed");
-                        if (Functions.IsCalloutRunning() && Globals.Config.StopCurrentCallout == true) { Functions.StopCurrentCallout(); }
-                        else { RandomCallouts.StartRandomCallout(); }
+                        Logger.DebugLog("ForceCalloutKey + ModifierKey pressed");
+                        RandomCallouts.StartRandomCallout();
                     }
                 }
 
