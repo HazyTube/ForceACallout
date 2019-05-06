@@ -49,12 +49,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CalloutManager, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>E:\Steam\steamapps\common\Grand Theft Auto V\plugins\LSPDFR\CalloutManager.dll</HintPath>
-    </Reference>
     <Reference Include="LSPD First Response, Version=0.4.39.22580, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\DLL Refrences\LSPD First Response.dll</HintPath>
+    </Reference>
+    <Reference Include="PoliceSmartRadio, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\DLL Refrences\PoliceSmartRadio.dll</HintPath>
     </Reference>
     <Reference Include="RAGENativeUI, Version=1.6.3.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -76,9 +76,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\ForceACalloutFunctions.cs" />
+    <Compile Include="API\PoliceSmartRadioFunctions.cs" />
     <Compile Include="Utils\Availability.cs" />
-    <Compile Include="Utils\Config.cs" />
-    <Compile Include="Utils\Core.cs" />
+    <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\Globals.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

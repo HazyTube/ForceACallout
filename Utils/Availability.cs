@@ -45,13 +45,13 @@ namespace ForceACallout.Utils
             {
                 _availableText = new ResText("Available for calls: ",
                     new Point(420, (int)(resolutionRatio.Height - 120)), 0.3f, Color.FromArgb(255, Color.White),
-                    Common.EFont.ChaletLondon, ResText.Alignment.Centered);
+                    RAGENativeUI.Common.EFont.ChaletLondon, ResText.Alignment.Centered);
             }
             else
             {
                 _availableText = new ResText("Available for calls: ",
                     new Point(420, (int)(resolutionRatio.Height - 57)), 0.3f, Color.FromArgb(255, Color.White),
-                    Common.EFont.ChaletLondon, ResText.Alignment.Centered);
+                    RAGENativeUI.Common.EFont.ChaletLondon, ResText.Alignment.Centered);
             }
 
 

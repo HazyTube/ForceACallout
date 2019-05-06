@@ -11,11 +11,12 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
+using Rage;
 using System;
 using System.Reflection;
-using Rage;
-using LSPD_First_Response.Mod.API;
 using ForceACallout.Utils;
+using System.Windows.Forms;
+using LSPD_First_Response.Mod.API;
 
 [assembly: Rage.Attributes.Plugin("ForceACallout", Description = "Lets players start a random callout by pressing a key.", Author = "HazyTube")]
 namespace ForceACallout
@@ -34,8 +35,10 @@ namespace ForceACallout
             
             Functions.OnOnDutyStateChanged += DutyStateChange;
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LSPDFRResolveEventHandler);
+            
+            Events.OnCalloutAccepted += EventsOnOnCalloutAccepted;
 
-            if (Globals.Application.IsPluginInBeta == true)
+            if (Globals.Application.IsPluginInBeta)
             {
                 Logger.Log($"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version.ToString()}{Globals.Application.CurrentBetaVersion} has been  initialized.");
             }
@@ -45,13 +48,26 @@ namespace ForceACallout
             }
 
             //This sets the currentversion
-            Globals.Application.CurrentVersion = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
+            Globals.Application.CurrentVersion =
+                $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
 
             //This sets the config path to /plugins/lspdfr for the ini file
             Globals.Application.ConfigPath = "Plugins/LSPDFR/";
+        }
 
-            Globals.Application.LSPDFRFolder = "lspdfr";
+        private void EventsOnOnCalloutAccepted(LHandle handle)
+        {
+            if (Globals.Config.AutoChangeAvailability)
+            {
+                Functions.SetPlayerAvailableForCalls(false);
+                Logger.DebugLog("Player accepted callout and AutoChangeAvailability is set to " +
+                                Globals.Config.AutoChangeAvailability + ", setting player to unavailable");
+            }
 
+            if (!Globals.Config.AvailableForCalloutsText)
+            {
+                Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+            }
         }
 
         public void DutyStateChange(bool OnDuty)
@@ -61,7 +77,7 @@ namespace ForceACallout
             {
                 Game.LogTrivial($"--------------------------------------{Globals.Application.PluginName} startup log--------------------------------------");
 
-                if (Globals.Application.IsPluginInBeta == false)
+                if (!Globals.Application.IsPluginInBeta)
                 {
                     //Checks for an update
                     int versionStatus = Updater.CheckUpdate();
@@ -77,12 +93,17 @@ namespace ForceACallout
                     }
                     else if (versionStatus == 1)
                     {
+                        Logger.Log("Current version of plugin is higher than the version reported on the official GitHub, this could be an error that you may want to report!");
+                        Notifier.StartUpNotification();
+                    }
+                    else
+                    {
                         Notifier.StartUpNotification();
                         Logger.Log($"Plugin version v{Globals.Application.CurrentVersion} loaded succesfully");
                     }
                 }
 
-                if (Globals.Application.IsPluginInBeta == true)
+                if (Globals.Application.IsPluginInBeta)
                 {
                     //Checks for an update
                     int betaVersionStatus = Updater.CheckBetaUpdate();
@@ -92,8 +113,10 @@ namespace ForceACallout
                     {
                         Notifier.StartUpNotificationBetaOutdated();
                         Logger.Log($"Plugin is out of date.");
-                        Logger.Log($"(Current Beta Version: {Globals.Application.CurrentVersion}{Globals.Application.CurrentBetaVersion})");
-                        Logger.Log($"(Latest Beta Version: {Globals.Application.LatestVersion}{Globals.Application.LatestBetaVersion})");
+                        Logger.Log(
+                            $"(Current Beta Version: {Globals.Application.CurrentVersion}{Globals.Application.CurrentBetaVersion})");
+                        Logger.Log(
+                            $"(Latest Beta Version: {Globals.Application.LatestVersion}{Globals.Application.LatestBetaVersion})");
                     }
                     else if (betaVersionStatus == -2 || betaVersionStatus == 0 || versionStatus == -2)
                     {
@@ -102,31 +125,101 @@ namespace ForceACallout
                     else if (betaVersionStatus == 1 || versionStatus == 1)
                     {
                         Notifier.StartUpNotificationBeta();
-                        Logger.Log($"Plugin Version v{Globals.Application.CurrentVersion}{Globals.Application.CurrentBetaVersion} loaded successfully");
+                        Logger.Log(
+                            $"Plugin Version v{Globals.Application.CurrentVersion}{Globals.Application.CurrentBetaVersion} loaded successfully");
                         Logger.Log("Plugin is in beta!");
                     }
-}
-                //Loads the config file (.ini file)
-                Config.LoadConfig();
+                }
 
-                StartPlugin();
+                //Loads the config file (.ini file)
+                Settings.LoadSettings();
+
+                GameFiber.StartNew(delegate
+                {
+                    Availability.Main();
+                    
+                    if (Common.IsLSPDFRPluginRunning("PoliceSmartRadio"))
+                    {
+                        PoliceSmartRadio.API.Functions.AddActionToButton(new Action(ChangeAvailability),
+                            "ChangeAvailability");
+                        PoliceSmartRadio.API.Functions.AddActionToButton(new Action(ForceCallout), "ForceCallout");
+                    }
+
+                    while (true)
+                    {
+                        GameFiber.Yield();
+
+                        if (Common.IsKeyDown(Globals.Controls.ForceCalloutModifier, Globals.Controls.ForceCalloutKey))
+                        {
+                            RandomCallouts.StartRandomCallout();
+                        }
+
+                        if (Common.IsKeyDown(Globals.Controls.AvailabilityModifier, Globals.Controls.AvailabilityKey))
+                        {
+                            Logger.DebugLog("AvailabilityKey Pressed");
+
+                            Globals.Status.FirstEvent = true;
+
+                            if (Functions.IsPlayerAvailableForCalls())
+                            {
+                                Functions.SetPlayerAvailableForCalls(false);
+
+                                if (!Globals.Config.AvailableForCalloutsText)
+                                {
+                                    Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+                                }
+
+                                Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                            }
+                            else
+                            {
+                                Functions.SetPlayerAvailableForCalls(true);
+
+                                if (!Globals.Config.AvailableForCalloutsText)
+                                {
+                                    Notifier.DisplayNotification("Status", "You are now ~g~available~s~ for calls");
+                                }
+
+                                Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
+                            }
+                        }
+                    }
+                });
             }
         }
 
-        private static void StartPlugin()
+        internal static void ChangeAvailability()
         {
-            GameFiber.StartNew(delegate
+            if (Functions.IsPlayerAvailableForCalls())
+            {
+                Functions.SetPlayerAvailableForCalls(false);
+
+                if (!Globals.Config.AvailableForCalloutsText)
+                {
+                    Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+                }
+            }
+            else
+            {
+                Functions.SetPlayerAvailableForCalls(true);
+
+                if (!Globals.Config.AvailableForCalloutsText)
+                {
+                    Notifier.DisplayNotification("Status", "You are now ~g~available~s~ for calls");
+                }
+            }
+        }
+
+        internal static void ForceCallout()
         {
-            Logger.DebugLog("New gamefiber started");
-            Core.RunPlugin();
-        });
+            RandomCallouts.StartRandomCallout();
         }
 
         public override void Finally()
         {
             Logger.Log("ForceACallout has been unloaded");
         }
-
+        
         public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
         {
             foreach (Assembly allUserPlugin in Functions.GetAllUserPlugins())
@@ -136,10 +229,18 @@ namespace ForceACallout
             }
             return (Assembly) null;
         }
+    }
 
-        public static bool IsLSPDFRPluginRunning(string Plugin, Version minversion = null)
+    internal class Common
+    {
+        internal static bool IsKeyDown(Keys ModifierKey, Keys Key)
         {
-            foreach (Assembly allUserPlugin in Functions.GetAllUserPlugins())
+            return (Game.IsKeyDownRightNow(ModifierKey) || ModifierKey == Keys.None) && Game.IsKeyDown(Key);
+        }
+        
+        internal static bool IsLSPDFRPluginRunning(string Plugin, Version minversion = null)
+        {
+            foreach (Assembly allUserPlugin in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
                 AssemblyName name = allUserPlugin.GetName();
                 if (name.Name.ToLower() == Plugin.ToLower() && (minversion == (Version) null || name.Version.CompareTo(minversion) >= 0))

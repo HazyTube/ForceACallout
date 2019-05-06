@@ -11,7 +11,6 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
-using Rage;
 using System;
 using System.Net;
 
@@ -28,11 +27,11 @@ namespace ForceACallout.Utils
             try
             {
                 Logger.Log("Fetching latest plugin version from GitHub");
-                if (Globals.Application.IsPluginInBeta == false)
+                if (!Globals.Application.IsPluginInBeta)
                 {
-                    response = wc.DownloadStringTaskAsync(new Uri("https://github.com/HazyTube/ForceACallout/blob/master/PluginVersionInfo/LatestVersion")).Result;
+                    response = wc.DownloadStringTaskAsync(new Uri("https://raw.githubusercontent.com/HazyTube/ForceACallout/master/PluginVersionInfo/LatestVersion")).Result;
                 }
-                else if (Globals.Application.IsPluginInBeta == true)
+                else if (Globals.Application.IsPluginInBeta)
                 {
                     response = wc.DownloadStringTaskAsync(new Uri("https://raw.githubusercontent.com/HazyTube/ForceACallout/master/PluginVersionInfo/LatestBetaVersion")).Result;
                 }

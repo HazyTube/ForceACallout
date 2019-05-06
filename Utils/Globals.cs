@@ -48,7 +48,6 @@ namespace ForceACallout
             public static string CurrentVersion { get; set; }
             public static string LatestVersion { get; set; }
             public static bool SettingsLoaded { get; set; }
-            public static string LSPDFRFolder { get; set; }
             public static string PluginName { get; set; }
             
             //Beta stuff

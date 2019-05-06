@@ -18,20 +18,13 @@ namespace ForceACallout.Utils
 {
     internal static class Notifier
     {
-        private const string NotificationPrefix = "ForceACallout";
+        private const string NotificationPrefix = "Force A Callout";
 
-        internal static void Notify(string body)
+        internal static void DisplayNotification(string Subtitle, string Body)
         {
-            string notice = string.Format("~p~[{0}]~s~: {1}", NotificationPrefix, body);
-            Game.DisplayNotification(notice);
-            Logger.DebugLog("Notification Sent.");
-        }
-
-        internal static void NotifySubtitle(string body)
-        {
-            string subtitle = string.Format("~p~[{0}]~s~: {1}", NotificationPrefix, body);
-            Game.DisplaySubtitle(subtitle);
-            Logger.DebugLog("Subtitle Sent.");
+            Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", NotificationPrefix, $"~b~{Subtitle}~s~",
+                Body);
+            Logger.DebugLog("Notification Displayed");
         }
 
         internal static void StartUpNotification()
