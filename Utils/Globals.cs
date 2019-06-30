@@ -24,8 +24,6 @@ namespace ForceACallout
 
             public static Keys AvailabilityKey { get; set; }
             public static Keys AvailabilityModifier { get; set; }
-
-            public static Keys LSPDFRAcceptCalloutKey { get; set; }
         }
 
         internal static class Config

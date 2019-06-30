@@ -11,11 +11,20 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
+/*
+CHANGELOG NOTEPAD (This is just a reminder for me so I don't forget what I changed with an update)
+
+- 
+
+*/
+
 using Rage;
 using System;
 using System.Reflection;
 using ForceACallout.Utils;
 using System.Windows.Forms;
+using ForceACallout.API;
+using LSPD_First_Response;
 using LSPD_First_Response.Mod.API;
 
 [assembly: Rage.Attributes.Plugin("ForceACallout", Description = "Lets players start a random callout by pressing a key.", Author = "HazyTube")]
@@ -62,11 +71,11 @@ namespace ForceACallout
                 Functions.SetPlayerAvailableForCalls(false);
                 Logger.DebugLog("Player accepted callout and AutoChangeAvailability is set to " +
                                 Globals.Config.AutoChangeAvailability + ", setting player to unavailable");
-            }
-
-            if (!Globals.Config.AvailableForCalloutsText)
-            {
-                Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+                
+                if (!Globals.Config.AvailableForCalloutsText)
+                {
+                    Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+                }
             }
         }
 
@@ -133,7 +142,7 @@ namespace ForceACallout
 
                 //Loads the config file (.ini file)
                 Settings.LoadSettings();
-
+                
                 GameFiber.StartNew(delegate
                 {
                     Availability.Main();
