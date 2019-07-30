@@ -33,10 +33,12 @@ namespace ForceACallout.Utils
             //Makes a new converter to convert strings to keys
             KeysConverter kc = new KeysConverter();
 
-            string FoceCalloutKey;
-            string ForceCalloutModifier;
-            string AvailabilityKey;
-            string AvailabilityModifier;
+            string FoceCalloutKey,
+                ForceCalloutModifier,
+                AvailabilityKey,
+                AvailabilityModifier,
+                EndCalloutKey,
+                EndCalloutModifier;
 
             //KEYS
             //Reads the keys and modifiers from the ini file
@@ -44,6 +46,8 @@ namespace ForceACallout.Utils
             ForceCalloutModifier = settings.ReadString("Keybindings", "ForceCalloutModifier", "None");
             AvailabilityKey = settings.ReadString("Keybindings", "AvailabilityKey", "Z");
             AvailabilityModifier = settings.ReadString("Keybindings", "AvailabilityModifier", "None");
+            EndCalloutKey = settings.ReadString("Keybindings", "EndCalloutKey", "End");
+            EndCalloutModifier = settings.ReadString("Keybindings", "EndCalloutModifier", "None");
 
             //KEY CONVERTERS
             //Converts strings to keys
@@ -51,6 +55,8 @@ namespace ForceACallout.Utils
             Globals.Controls.ForceCalloutModifier = (Keys)kc.ConvertFromString(ForceCalloutModifier);
             Globals.Controls.AvailabilityKey = (Keys)kc.ConvertFromString(AvailabilityKey);
             Globals.Controls.AvailabilityModifier = (Keys)kc.ConvertFromString(AvailabilityModifier);
+            Globals.Controls.EndCalloutKey = (Keys)kc.ConvertFromString(EndCalloutKey);
+            Globals.Controls.EndCalloutModifier = (Keys)kc.ConvertFromString(EndCalloutModifier);
 
             //GENERAL
             //Reads the values in the General section from the ini file

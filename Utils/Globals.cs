@@ -24,6 +24,9 @@ namespace ForceACallout
 
             public static Keys AvailabilityKey { get; set; }
             public static Keys AvailabilityModifier { get; set; }
+            
+            public static Keys EndCalloutKey { get; set; }
+            public static Keys EndCalloutModifier { get; set; }
         }
 
         internal static class Config
@@ -33,7 +36,7 @@ namespace ForceACallout
             public static bool AvailableForCalloutsText { get; set; }
             public static int RectangleAlpha { get; set; }
             public static bool PLDCompatibility { get; set; }
-
+            
             //CALLOUTS
             public static bool CalloutProbability { get; set; }
             public static int CalloutProbabilityModifier { get; set; }

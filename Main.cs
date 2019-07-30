@@ -11,23 +11,16 @@ Thanks to NoNameSet for helping with the on screen text box
 
 */
 
-/*
-CHANGELOG NOTEPAD (This is just a reminder for me so I don't forget what I changed with an update)
-
-- 
-
-*/
-
 using Rage;
 using System;
 using System.Reflection;
 using ForceACallout.Utils;
 using System.Windows.Forms;
 using ForceACallout.API;
-using LSPD_First_Response;
 using LSPD_First_Response.Mod.API;
+using Functions = LSPD_First_Response.Mod.API.Functions;
 
-[assembly: Rage.Attributes.Plugin("ForceACallout", Description = "Lets players start a random callout by pressing a key.", Author = "HazyTube")]
+[assembly: Rage.Attributes.Plugin("ForceACallout", Description = "Start a random callout by pressing a key.", Author = "HazyTube")]
 namespace ForceACallout
 {
     public class Main : Plugin
@@ -71,11 +64,6 @@ namespace ForceACallout
                 Functions.SetPlayerAvailableForCalls(false);
                 Logger.DebugLog("Player accepted callout and AutoChangeAvailability is set to " +
                                 Globals.Config.AutoChangeAvailability + ", setting player to unavailable");
-                
-                if (!Globals.Config.AvailableForCalloutsText)
-                {
-                    Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
-                }
             }
         }
 
@@ -149,14 +137,19 @@ namespace ForceACallout
                     
                     if (Common.IsLSPDFRPluginRunning("PoliceSmartRadio"))
                     {
-                        PoliceSmartRadio.API.Functions.AddActionToButton(new Action(ChangeAvailability),
+                        PoliceSmartRadioFunctions.AddActionToButton(new Action(ChangeAvailability),
                             "ChangeAvailability");
-                        PoliceSmartRadio.API.Functions.AddActionToButton(new Action(ForceCallout), "ForceCallout");
+                        PoliceSmartRadioFunctions.AddActionToButton(new Action(ForceCallout), "ForceCallout");
                     }
 
                     while (true)
                     {
                         GameFiber.Yield();
+
+                        if (Common.IsKeyDown(Globals.Controls.EndCalloutModifier, Globals.Controls.EndCalloutKey) && Functions.IsCalloutRunning())
+                        {
+                            Functions.StopCurrentCallout();
+                        }
 
                         if (Common.IsKeyDown(Globals.Controls.ForceCalloutModifier, Globals.Controls.ForceCalloutKey))
                         {
@@ -175,7 +168,7 @@ namespace ForceACallout
 
                                 if (!Globals.Config.AvailableForCalloutsText)
                                 {
-                                    Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+                                    Notifier.DisplayNotification("Status", "You are ~r~not available~s~ for calls");
                                 }
 
                                 Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
@@ -186,7 +179,7 @@ namespace ForceACallout
 
                                 if (!Globals.Config.AvailableForCalloutsText)
                                 {
-                                    Notifier.DisplayNotification("Status", "You are now ~g~available~s~ for calls");
+                                    Notifier.DisplayNotification("Status", "You are ~g~available~s~ for calls");
                                 }
 
                                 Logger.DebugLog("CallAvailability is set to " + Functions.IsPlayerAvailableForCalls());
@@ -205,7 +198,7 @@ namespace ForceACallout
 
                 if (!Globals.Config.AvailableForCalloutsText)
                 {
-                    Notifier.DisplayNotification("Status", "You are now ~r~not available~s~ for calls");
+                    Notifier.DisplayNotification("Status", "You are ~r~not available~s~ for calls");
                 }
             }
             else
@@ -214,7 +207,7 @@ namespace ForceACallout
 
                 if (!Globals.Config.AvailableForCalloutsText)
                 {
-                    Notifier.DisplayNotification("Status", "You are now ~g~available~s~ for calls");
+                    Notifier.DisplayNotification("Status", "You are ~g~available~s~ for calls");
                 }
             }
         }
