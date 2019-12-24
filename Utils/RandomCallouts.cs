@@ -23,8 +23,8 @@ namespace ForceACallout.Utils
 {
     internal static class RandomCallouts
     {
-        internal static List<string> RandomCalloutCache = new List<string>();
-        internal static int[] CalloutProbabilityRegistrationCount =
+        private static readonly List<string> RandomCalloutCache = new List<string>();
+        private static readonly int[] CalloutProbabilityRegistrationCount =
         {
             95, 80, 70, 50, 30, 15, 0
         };
@@ -38,12 +38,12 @@ namespace ForceACallout.Utils
             }, "CalloutCacheLoader");
         }
 
-        internal static void CacheCallouts()
+        private static void CacheCallouts()
         {
-            foreach (Assembly Assem in Functions.GetAllUserPlugins())
+            foreach (var Assem in Functions.GetAllUserPlugins())
             {
-                AssemblyName AssemName = Assem.GetName();
-                List<Type> AssemCallouts = (from Callout in Assem.GetTypes()
+                var AssemName = Assem.GetName();
+                var AssemCallouts = (from Callout in Assem.GetTypes()
                                             where Callout.IsClass && Callout.BaseType == typeof(LSPD_First_Response.Mod.Callouts.Callout)
                                             select Callout).ToList();
 
@@ -54,14 +54,14 @@ namespace ForceACallout.Utils
 
                 else
                 {
-                    int AddCount = 0;
+                    var AddCount = 0;
                     foreach (Type Callout in AssemCallouts)
                     {
-                        object[] CalloutAttributes = Callout.GetCustomAttributes(typeof(CalloutInfoAttribute), true);
+                        var CalloutAttributes = Callout.GetCustomAttributes(typeof(CalloutInfoAttribute), true);
 
                         if (CalloutAttributes.Count() > 0)
                         {
-                            CalloutInfoAttribute CalloutAttribute = (CalloutInfoAttribute)(from a in CalloutAttributes select a).FirstOrDefault();
+                            var CalloutAttribute = (CalloutInfoAttribute)(from a in CalloutAttributes select a).FirstOrDefault();
 
                             if (CalloutAttribute != null)
                             {
@@ -70,7 +70,7 @@ namespace ForceACallout.Utils
 
                                 else
                                 {
-                                    for (int LoopCount = 0; LoopCount < CalloutProbabilityRegistrationCount[(int)CalloutAttribute.CalloutProbability] * Globals.Config.CalloutProbabilityModifier; LoopCount++)
+                                    for (var LoopCount = 0; LoopCount < CalloutProbabilityRegistrationCount[(int)CalloutAttribute.CalloutProbability] * Globals.Config.CalloutProbabilityModifier; LoopCount++)
                                     {
                                         RandomCalloutCache.Add(CalloutAttribute.Name);
                                     }
@@ -93,11 +93,11 @@ namespace ForceACallout.Utils
         internal static string StartRandomCallout()
         {
             Logger.DebugLog("StartRandomCallout() Started");
-            Random RandomValue = new Random();
+            var RandomValue = new Random();
 
             try
             {
-                string RandomCallout = RandomCalloutCache[RandomValue.Next(0, RandomCalloutCache.Count)];
+                var RandomCallout = RandomCalloutCache[RandomValue.Next(0, RandomCalloutCache.Count)];
 
                 Functions.StartCallout(RandomCallout);
                 Logger.Log($"Starting callout {RandomCallout}");

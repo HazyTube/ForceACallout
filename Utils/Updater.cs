@@ -41,7 +41,7 @@ namespace ForceACallout.Utils
                 Logger.Log($"Checking version of plugin {Globals.Application.PluginName} Failed");
             }
 
-            //If we get a null respone then the download failed and we just return -2 and inform user of failing the download
+            //If we get a null response then the download failed and we just return -2 and inform user of failing the download
             if (string.IsNullOrWhiteSpace(response))
             {
                 return -2;
@@ -49,8 +49,8 @@ namespace ForceACallout.Utils
 
             Globals.Application.LatestVersion = response.Trim();
 
-            Version current = new Version(Globals.Application.CurrentVersion);
-            Version latest = new Version(Globals.Application.LatestVersion);
+            var current = new Version(Globals.Application.CurrentVersion);
+            var latest = new Version(Globals.Application.LatestVersion);
 
             //This is where we're checking the results
             //If the plugin is newer than what's being reported then we'll return 1 (This will just log the issue, no notification)
@@ -85,7 +85,7 @@ namespace ForceACallout.Utils
                 Logger.Log($"Getting latest beta version of plugin {Globals.Application.PluginName} Failed");
             }
 
-            //If we get a null respone then the download failed and we just return -2 and inform user of failing the download
+            //If we get a null response then the download failed and we just return -2 and inform user of failing the download
             if (string.IsNullOrWhiteSpace(LatestBetaResponse))
             {
                 return -2;
@@ -93,8 +93,8 @@ namespace ForceACallout.Utils
 
             Globals.Application.LatestBetaVersion = LatestBetaResponse.Trim();
 
-            string current = Globals.Application.CurrentBetaVersion;
-            string latest = Globals.Application.LatestBetaVersion;
+            var current = Globals.Application.CurrentBetaVersion;
+            var latest = Globals.Application.LatestBetaVersion;
 
             if (current == latest)
             {

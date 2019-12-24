@@ -23,7 +23,7 @@ namespace ForceACallout.Utils
         //Log line
         internal static void Log(string LogLine)
         {
-            string log = string.Format("[{0}]: {1}", LogPrefix, LogLine);
+            var log = $"[{LogPrefix}]: {LogLine}";
 
             Game.LogTrivial(log);
         }
@@ -31,12 +31,10 @@ namespace ForceACallout.Utils
         //Log line that will only run if the setting for debug logging is enabled
         internal static void DebugLog(string LogLine)
         {
-            if (Globals.Config.DebugLogging == true)
-            {
-                string log = string.Format("[{0}][DEBUG]: {1}", LogPrefix, LogLine);
+            if (Globals.Config.DebugLogging != true) return;
+            var log = $"[{LogPrefix}][DEBUG]: {LogLine}";
 
-                Game.LogTrivial(log);
-            }
+            Game.LogTrivial(log);
         }
     }
 }

@@ -16,11 +16,11 @@ using System.Windows.Forms;
 
 namespace ForceACallout.Utils
 {
-    class Settings
+    internal static class Settings
     {
-        private static InitializationFile initialiseFile(string filepath)
+        private static InitializationFile InitialiseFile(string filepath)
         {
-            InitializationFile ini = new InitializationFile(filepath);
+            var ini = new InitializationFile(filepath);
             ini.Create();
             return ini;
         }
@@ -28,30 +28,23 @@ namespace ForceACallout.Utils
         public static void LoadSettings()
         {
             //Reads the ini file
-            InitializationFile settings = initialiseFile(Globals.Application.ConfigPath + "ForceACallout.ini");
+            var settings = InitialiseFile(Globals.Application.ConfigPath + "ForceACallout.ini");
 
             //Makes a new converter to convert strings to keys
-            KeysConverter kc = new KeysConverter();
-
-            string FoceCalloutKey,
-                ForceCalloutModifier,
-                AvailabilityKey,
-                AvailabilityModifier,
-                EndCalloutKey,
-                EndCalloutModifier;
+            var kc = new KeysConverter();
 
             //KEYS
             //Reads the keys and modifiers from the ini file
-            FoceCalloutKey = settings.ReadString("Keybindings", "ForceCalloutKey", "X");
-            ForceCalloutModifier = settings.ReadString("Keybindings", "ForceCalloutModifier", "None");
-            AvailabilityKey = settings.ReadString("Keybindings", "AvailabilityKey", "Z");
-            AvailabilityModifier = settings.ReadString("Keybindings", "AvailabilityModifier", "None");
-            EndCalloutKey = settings.ReadString("Keybindings", "EndCalloutKey", "End");
-            EndCalloutModifier = settings.ReadString("Keybindings", "EndCalloutModifier", "None");
+            var ForceCalloutKey = settings.ReadString("Keybindings", "ForceCalloutKey", "X");
+            var ForceCalloutModifier = settings.ReadString("Keybindings", "ForceCalloutModifier", "None");
+            var AvailabilityKey = settings.ReadString("Keybindings", "AvailabilityKey", "Z");
+            var AvailabilityModifier = settings.ReadString("Keybindings", "AvailabilityModifier", "None");
+            var EndCalloutKey = settings.ReadString("Keybindings", "EndCalloutKey", "End");
+            var EndCalloutModifier = settings.ReadString("Keybindings", "EndCalloutModifier", "None");
 
             //KEY CONVERTERS
             //Converts strings to keys
-            Globals.Controls.ForceCalloutKey = (Keys)kc.ConvertFromString(FoceCalloutKey);
+            Globals.Controls.ForceCalloutKey = (Keys)kc.ConvertFromString(ForceCalloutKey);
             Globals.Controls.ForceCalloutModifier = (Keys)kc.ConvertFromString(ForceCalloutModifier);
             Globals.Controls.AvailabilityKey = (Keys)kc.ConvertFromString(AvailabilityKey);
             Globals.Controls.AvailabilityModifier = (Keys)kc.ConvertFromString(AvailabilityModifier);
@@ -74,7 +67,7 @@ namespace ForceACallout.Utils
             Globals.Application.SettingsLoaded = true;
 
             //Logs some things
-            Logger.Log("[KEYBINDINGS] ForceCalloutKey is set to " + FoceCalloutKey);
+            Logger.Log("[KEYBINDINGS] ForceCalloutKey is set to " + ForceCalloutKey);
             Logger.Log("[KEYBINDINGS] ForceCalloutModifier is set to " + ForceCalloutModifier);
             Logger.Log("[KEYBINDINGS] AvailabilityKey is set to " + AvailabilityKey);
             Logger.Log("[KEYBINDINGS] AvailabilityModifier is set to " + AvailabilityModifier);

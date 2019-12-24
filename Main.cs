@@ -36,38 +36,31 @@ namespace ForceACallout
             Globals.Application.PluginName = "ForceACallout";
             
             Functions.OnOnDutyStateChanged += DutyStateChange;
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LSPDFRResolveEventHandler);
+            AppDomain.CurrentDomain.AssemblyResolve += LspdfrResolveEventHandler;
             
             Events.OnCalloutAccepted += EventsOnOnCalloutAccepted;
 
-            if (Globals.Application.IsPluginInBeta)
-            {
-                Logger.Log($"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version.ToString()}{Globals.Application.CurrentBetaVersion} has been  initialized.");
-            }
-            else
-            {
-                Logger.Log($"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version.ToString()} has been  initialized.");
-            }
+            Logger.Log(Globals.Application.IsPluginInBeta
+                ? $"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version}{Globals.Application.CurrentBetaVersion} has been  initialized."
+                : $"{Globals.Application.PluginName} {Assembly.GetExecutingAssembly().GetName().Version} has been  initialized.");
 
-            //This sets the currentversion
+            //This sets the current version
             Globals.Application.CurrentVersion =
-                $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
+                $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
             //This sets the config path to /plugins/lspdfr for the ini file
             Globals.Application.ConfigPath = "Plugins/LSPDFR/";
         }
 
-        private void EventsOnOnCalloutAccepted(LHandle handle)
+        private static void EventsOnOnCalloutAccepted(LHandle handle)
         {
-            if (Globals.Config.AutoChangeAvailability)
-            {
-                Functions.SetPlayerAvailableForCalls(false);
-                Logger.DebugLog("Player accepted callout and AutoChangeAvailability is set to " +
-                                Globals.Config.AutoChangeAvailability + ", setting player to unavailable");
-            }
+            if (!Globals.Config.AutoChangeAvailability) return;
+            Functions.SetPlayerAvailableForCalls(false);
+            Logger.DebugLog("Player accepted callout and AutoChangeAvailability is set to " +
+                            Globals.Config.AutoChangeAvailability + ", setting player to unavailable");
         }
 
-        public void DutyStateChange(bool OnDuty)
+        private static void DutyStateChange(bool OnDuty)
         {
             //This only runs if the player is onDuty
             if (OnDuty)
@@ -77,34 +70,33 @@ namespace ForceACallout
                 if (!Globals.Application.IsPluginInBeta)
                 {
                     //Checks for an update
-                    int versionStatus = Updater.CheckUpdate();
+                    var versionStatus = Updater.CheckUpdate();
 
-                    if (versionStatus == -1)
+                    switch (versionStatus)
                     {
-                        Notifier.StartUpNotificationOutdated();
-                        Logger.Log($"Plugin is out of date. (Current Version: {Globals.Application.CurrentVersion}) - (Latest Version: {Globals.Application.LatestVersion})");
-                    }
-                    else if (versionStatus == -2)
-                    {
-                        Logger.Log("There was an issue checking plugin versions, the plugin may be out of date!");
-                    }
-                    else if (versionStatus == 1)
-                    {
-                        Logger.Log("Current version of plugin is higher than the version reported on the official GitHub, this could be an error that you may want to report!");
-                        Notifier.StartUpNotification();
-                    }
-                    else
-                    {
-                        Notifier.StartUpNotification();
-                        Logger.Log($"Plugin version v{Globals.Application.CurrentVersion} loaded succesfully");
+                        case -1:
+                            Notifier.StartUpNotificationOutdated();
+                            Logger.Log($"Plugin is out of date. (Current Version: {Globals.Application.CurrentVersion}) - (Latest Version: {Globals.Application.LatestVersion})");
+                            break;
+                        case -2:
+                            Logger.Log("There was an issue checking plugin versions, the plugin may be out of date!");
+                            break;
+                        case 1:
+                            Logger.Log("Current version of plugin is higher than the version reported on the official GitHub, this could be an error that you may want to report!");
+                            Notifier.StartUpNotification();
+                            break;
+                        default:
+                            Notifier.StartUpNotification();
+                            Logger.Log($"Plugin version v{Globals.Application.CurrentVersion} loaded successfully");
+                            break;
                     }
                 }
 
                 if (Globals.Application.IsPluginInBeta)
                 {
                     //Checks for an update
-                    int betaVersionStatus = Updater.CheckBetaUpdate();
-                    int versionStatus = Updater.CheckUpdate();
+                    var betaVersionStatus = Updater.CheckBetaUpdate();
+                    var versionStatus = Updater.CheckUpdate();
 
                     if (betaVersionStatus == -1 || versionStatus == -1)
                     {
@@ -135,7 +127,7 @@ namespace ForceACallout
                 {
                     Availability.Main();
                     
-                    if (Common.IsLSPDFRPluginRunning("PoliceSmartRadio"))
+                    if (Common.IsLspdfrPluginRunning("PoliceSmartRadio"))
                     {
                         PoliceSmartRadioFunctions.AddActionToButton(new Action(ChangeAvailability),
                             "ChangeAvailability");
@@ -190,7 +182,7 @@ namespace ForceACallout
             }
         }
 
-        internal static void ChangeAvailability()
+        private static void ChangeAvailability()
         {
             if (Functions.IsPlayerAvailableForCalls())
             {
@@ -212,7 +204,7 @@ namespace ForceACallout
             }
         }
 
-        internal static void ForceCallout()
+        private static void ForceCallout()
         {
             RandomCallouts.StartRandomCallout();
         }
@@ -221,8 +213,8 @@ namespace ForceACallout
         {
             Logger.Log("ForceACallout has been unloaded");
         }
-        
-        public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
+
+        private static Assembly LspdfrResolveEventHandler(object sender, ResolveEventArgs args)
         {
             foreach (Assembly allUserPlugin in Functions.GetAllUserPlugins())
             {
@@ -233,18 +225,18 @@ namespace ForceACallout
         }
     }
 
-    internal class Common
+    internal static class Common
     {
         internal static bool IsKeyDown(Keys ModifierKey, Keys Key)
         {
             return (Game.IsKeyDownRightNow(ModifierKey) || ModifierKey == Keys.None) && Game.IsKeyDown(Key);
         }
         
-        internal static bool IsLSPDFRPluginRunning(string Plugin, Version minversion = null)
+        internal static bool IsLspdfrPluginRunning(string Plugin, Version minversion = null)
         {
-            foreach (Assembly allUserPlugin in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
+            foreach (var allUserPlugin in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
-                AssemblyName name = allUserPlugin.GetName();
+                var name = allUserPlugin.GetName();
                 if (name.Name.ToLower() == Plugin.ToLower() && (minversion == (Version) null || name.Version.CompareTo(minversion) >= 0))
                     return true;
             }

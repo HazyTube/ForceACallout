@@ -52,7 +52,7 @@
     <Reference Include="LSPD First Response, Version=0.4.7148.42495, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\DLLs\LSPD First Response.dll</HintPath>
     </Reference>
-    <Reference Include="PoliceSmartRadio, Version=1.1.2.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="PoliceSmartRadio, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\DLLs\PoliceSmartRadio.dll</HintPath>
     </Reference>
     <Reference Include="RAGENativeUI, Version=1.6.3.0, Culture=neutral, PublicKeyToken=null">
@@ -71,9 +71,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="UltimateBackup, Version=1.5.6.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\DLL Refrences\UltimateBackup.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Functions.cs" />

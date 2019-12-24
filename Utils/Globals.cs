@@ -13,9 +13,9 @@ Thanks to NoNameSet for helping with the on screen text box
 
 using System.Windows.Forms;
 
-namespace ForceACallout
+namespace ForceACallout.Utils
 {
-    public class Globals
+    public static class Globals
     {
         internal static class Controls
         {
