@@ -44,3 +44,16 @@ C:\Users\Zafer\CloudStation\GTA 5 Development\Projects\ForceACallout\ForceACallo
 C:\Users\Zafer\CloudStation\GTA 5 Development\Projects\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.dll
 C:\Users\Zafer\CloudStation\GTA 5 Development\Projects\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.pdb
 C:\Users\Zafer\CloudStation\GTA 5 Development\Projects\ForceACallout\ForceACallout\bin\Debug\PoliceSmartRadio.xml
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\ForceACallout.ini
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\ForceACallout.dll
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\ForceACallout.pdb
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\RagePluginHookSDK.dll
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\PoliceSmartRadio.xml
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\RAGENativeUI.xml
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\bin\Debug\RagePluginHookSDK.xml
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.csproj.AssemblyReference.cache
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.csproj.CoreCompileInputs.cache
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.csproj.CopyComplete
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.dll
+C:\Users\Zafer\Documents\GitHub\ForceACallout\ForceACallout\obj\x64\Debug\ForceACallout.pdb

@@ -59,7 +59,7 @@
       <HintPath>..\DLLs\RAGENativeUI.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\DLLs\RagePluginHookSDK.dll</HintPath>
+      <HintPath>DLLs\RagePluginHookSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
